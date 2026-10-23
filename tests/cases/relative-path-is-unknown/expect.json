@@ -1,0 +1,11 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "only deletes from \"/tmp\"": false
+  }
+}

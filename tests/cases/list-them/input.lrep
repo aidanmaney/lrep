@@ -1,0 +1,4 @@
+# Case
+
+List the directory "/tmp".
+Compress them, then upload it to "s3://bucket/tmp".

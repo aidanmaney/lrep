@@ -1,0 +1,5 @@
+# Case
+
+Delete the file "/a".
+Delete the file "/b".
+This section deletes at most 1 times.

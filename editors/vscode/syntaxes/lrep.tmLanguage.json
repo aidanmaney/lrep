@@ -1,0 +1,41 @@
+{
+  "name": "lrep",
+  "scopeName": "source.lrep",
+  "fileTypes": ["lrep"],
+  "patterns": [
+    {
+      "name": "markup.heading",
+      "match": "^#{1,6} .*$"
+    },
+    {
+      "name": "comment.block",
+      "begin": "\\(",
+      "end": "\\)"
+    },
+    {
+      "name": "comment.block",
+      "begin": "(?i)(?<![\\w'])(?:because)(?![\\w'])",
+      "end": "(?=[.:](?:\\s|$))"
+    },
+    {
+      "name": "string.quoted.double",
+      "match": "\"(?:\\\\[\"\\\\]|[^\"\\\\])*\""
+    },
+    {
+      "name": "constant.numeric",
+      "match": "\\b[0-9]+\\b"
+    },
+    {
+      "name": "invalid.illegal",
+      "match": "(?i)(?<![\\w'])[a-z']*n't(?![\\w'])"
+    },
+    {
+      "name": "invalid.illegal",
+      "match": "(?i)(?<![\\w'])(?:everything|themselves|seventeen|shouldn't|something|although|anything|couldn't|eighteen|everyone|fourteen|nineteen|thirteen|thousand|whatever|whenever|wherever|wouldn't|another|billion|doesn't|fifteen|haven't|hundred|million|mustn't|neither|nothing|several|sixteen|someone|weren't|whereas|whether|anyone|aren't|didn't|either|eleven|enough|hadn't|hasn't|itself|myself|should|theirs|though|twelve|twenty|unless|wasn't|being|can't|could|don't|eight|every|isn't|least|might|other|ought|seven|shall|their|these|those|three|where|which|while|whose|won't|would|yours|been|both|does|each|five|four|have|hers|less|many|mine|more|most|much|must|nine|none|once|ours|some|such|that|they|this|were|what|when|whom|will|your|zero|all|any|but|can|did|few|had|has|her|him|his|its|may|nor|one|our|she|six|ten|two|was|who|yet|you|am|be|do|he|me|my|no|so|us|we|i)(?![\\w'])"
+    },
+    {
+      "name": "keyword.other.claim",
+      "match": "(?i)(?<![\\w'])(?:at\\s+most|always|never|only)(?![\\w'])"
+    }
+  ]
+}

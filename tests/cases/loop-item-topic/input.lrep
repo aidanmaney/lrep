@@ -1,0 +1,6 @@
+# Case
+
+List the directory "/tmp" as Temp.
+For each file in Temp:
+- If it is empty, delete it.
+- Compress it, then upload it to "https://x.com/up".

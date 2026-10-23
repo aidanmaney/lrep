@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "never deletes \"/etc\"": true,
+    "only deletes \"/tmp\"": true
+  }
+}

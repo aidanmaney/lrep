@@ -1,0 +1,12 @@
+{
+  "completed": [
+    true
+  ],
+  "sandbox": false,
+  "files": {
+    "/var/tmp/app/new.log": "y"
+  },
+  "absent": [
+    "/var/tmp/app/old.log"
+  ]
+}

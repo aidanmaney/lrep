@@ -1,0 +1,6 @@
+{
+  "codes": [],
+  "claims": {
+    "never deletes from \"/var/data\"": true
+  }
+}

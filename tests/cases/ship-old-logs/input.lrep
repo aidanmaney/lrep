@@ -1,0 +1,8 @@
+# Ship old logs
+
+List the directory "/var/log/app" as Logs.
+
+For each file in Logs:
+- If it is older than 7 days, compress it, then upload it to "s3://acme-logs/app".
+
+This section never deletes and only writes to "s3://acme-logs/app".

@@ -1,0 +1,7 @@
+# Deploy the release
+
+Open the file "/build/app.tar" as Bundle.
+Copy Bundle to "/srv/releases".
+Move the file "/build/app.tar" to "/build/shipped".
+
+This section never uploads and never deletes from "/srv" and only writes to "/srv/releases" and "/build/shipped".

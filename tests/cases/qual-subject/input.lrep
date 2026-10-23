@@ -1,0 +1,4 @@
+# Case
+
+Open the file "/tmp/a" as Draft.
+If the temporary Draft is empty, delete it.

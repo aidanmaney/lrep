@@ -1,0 +1,5 @@
+# Case
+
+Delete the file "/tmp/a".
+Run the command "ls".
+This section never runs.

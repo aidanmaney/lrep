@@ -1,0 +1,4 @@
+# Case
+
+Open the file "/a", then copy it to "/b", then move it to "/c".
+Open the file "/d" then delete it.

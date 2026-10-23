@@ -1,0 +1,85 @@
+{
+ "vocabulary": "examples.places",
+ "version": "0.1.0",
+ "qualifiers": [
+  {
+   "forms": [
+    "backup"
+   ],
+   "within": [
+    "/backup",
+    "s3://acme-backups"
+   ]
+  },
+  {
+   "forms": [
+    "temporary"
+   ],
+   "within": [
+    "/tmp",
+    "/var/tmp"
+   ]
+  },
+  {
+   "forms": [
+    "scratch"
+   ]
+  },
+  {
+   "forms": [
+    "production"
+   ],
+   "within": [
+    "/var/db",
+    "/srv"
+   ]
+  },
+  {
+   "forms": [
+    "config"
+   ],
+   "within": [
+    "/etc"
+   ]
+  },
+  {
+   "forms": [
+    "log"
+   ],
+   "from": [
+    "/var/log"
+   ]
+  },
+  {
+   "forms": [
+    "secret"
+   ],
+   "from": [
+    "/etc/secrets"
+   ]
+  },
+  {
+   "forms": [
+    "public"
+   ],
+   "within": [
+    "https://cdn.example.com",
+    "s3://acme-public"
+   ]
+  }
+ ],
+ "disjoint": [
+  [
+   "production",
+   "temporary"
+  ],
+  [
+   "production",
+   "backup"
+  ],
+  [
+   "production",
+   "scratch"
+  ]
+ ]
+}

@@ -1,0 +1,5 @@
+# Case
+
+Delete the file "/tmp/a.txt".
+This section never deleted from "/var".
+Deletes the file "/tmp/b.txt".

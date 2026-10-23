@@ -1,0 +1,8 @@
+# Limpiar
+
+Lista el directorio "/tmp/app" como Temporales.
+
+Para cada archivo en Temporales:
+- Si eso es vacío, borra eso.
+
+Esta sección solo borra de "/tmp/app".

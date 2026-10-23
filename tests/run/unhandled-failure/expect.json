@@ -1,0 +1,12 @@
+{
+  "completed": [
+    false
+  ],
+  "sandbox": false,
+  "files": {
+    "/a": "A"
+  },
+  "absent": [
+    "/b/a"
+  ]
+}

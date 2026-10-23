@@ -1,0 +1,4 @@
+# Case
+
+Open the file "/tmp/a.txt".
+If it is empty or it is missing and it is older than 7 days, delete it.

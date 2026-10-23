@@ -1,0 +1,3 @@
+# Case
+
+Open the file "/tmp/a.txt", zip it, then serve it over a websocket on port 8080.

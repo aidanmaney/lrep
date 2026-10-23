@@ -1,0 +1,6 @@
+{
+  "codes": [],
+  "claims": {
+    "only connects to \"s3://acme-logs\"": true
+  }
+}

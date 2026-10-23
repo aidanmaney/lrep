@@ -1,0 +1,8 @@
+{
+  "codes": [],
+  "claims": {
+    "nunca borra": true,
+    "solo escribe en \"/respaldo\"": true
+  },
+  "residue": "# Copiar el registro\n\nAbre archivo \"/var/data/a.log\" como Registro.\nCopia Registro a \"/respaldo\".\nEsta sección nunca borra y solo escribe en \"/respaldo\".\n"
+}

@@ -1,0 +1,4 @@
+# Case
+
+Move the file "/tmp/a.txt" to "/tmp/b".
+This section never writes and never moves.

@@ -1,0 +1,17 @@
+{
+  "vocabulary": "core.proc",
+  "version": "0.1.0",
+  "sorts": [
+    {"name": "command", "forms": ["command", "commands"], "literal": "string", "resource": "command"}
+  ],
+  "ops": [
+    {"forms": {"base": "run", "s": "runs", "past": "ran", "ing": "running", "pp": "run"},
+     "object": ["command"], "labels": {}, "required": ["object"],
+     "returns": {"sort": "text", "list": false, "resource": "none"},
+     "effects": [{"kind": "spawn", "on": "object"},
+                 {"kind": "read", "on": "top"}, {"kind": "write", "on": "top"},
+                 {"kind": "delete", "on": "top"}, {"kind": "listen", "on": "top"},
+                 {"kind": "connect", "on": "top"}],
+     "names": "spawn", "claimLabels": []}
+  ]
+}

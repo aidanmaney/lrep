@@ -1,0 +1,34 @@
+{
+ "vocabulary": "lib",
+ "version": "0.1.0",
+ "ops": [
+  {
+   "forms": {
+    "base": "stash",
+    "s": "stashes",
+    "past": "stashed",
+    "ing": "stashing"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {
+    "to": [
+     "directory"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "body": {
+    "file": "lib.lrep",
+    "section": "Stash",
+    "params": {
+     "object": "Source",
+     "to": "Target"
+    }
+   }
+  }
+ ]
+}

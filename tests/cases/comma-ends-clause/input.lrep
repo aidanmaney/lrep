@@ -1,0 +1,4 @@
+# Case
+
+Compress "/tmp/a" and "/tmp/b".
+Compress "/tmp/a", "/tmp/b".

@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "never writes to disk": true,
+    "only reads from \"/var/data\"": true
+  }
+}

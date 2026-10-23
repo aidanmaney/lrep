@@ -1,0 +1,9 @@
+{
+  "completed": [
+    true
+  ],
+  "sandbox": false,
+  "files": {
+    "/out/fallback.txt": "fb"
+  }
+}

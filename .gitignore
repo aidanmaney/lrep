@@ -1,0 +1,4 @@
+.lake/
+editors/vscode/node_modules/
+editors/vscode/*.vsix
+editors/vscode/.vscode-test/

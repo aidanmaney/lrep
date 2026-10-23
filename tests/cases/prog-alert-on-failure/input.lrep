@@ -1,0 +1,6 @@
+# Pull the data
+
+Fetch the url "https://example.com/data" as Data.
+If it fails, run the command "notify-oncall".
+
+This section never runs.

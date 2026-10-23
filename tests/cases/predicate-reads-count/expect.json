@@ -1,0 +1,6 @@
+{
+  "codes": [],
+  "claims": {
+    "only reads from \"/data\"": true
+  }
+}

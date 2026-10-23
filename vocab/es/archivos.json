@@ -1,0 +1,294 @@
+{
+ "vocabulary": "es.archivos",
+ "version": "0.1.0",
+ "sorts": [
+  {
+   "name": "file",
+   "forms": [
+    "archivo",
+    "archivos"
+   ],
+   "literal": "path",
+   "resource": "path-exact"
+  },
+  {
+   "name": "directory",
+   "forms": [
+    "directorio",
+    "directorios"
+   ],
+   "literal": "path",
+   "resource": "path-prefix"
+  },
+  {
+   "name": "archive",
+   "forms": [
+    "paquete",
+    "paquetes"
+   ],
+   "literal": "none",
+   "resource": "none"
+  },
+  {
+   "name": "text",
+   "forms": [
+    "texto"
+   ],
+   "literal": "none",
+   "resource": "none"
+  },
+  {
+   "name": "filesystem",
+   "forms": [],
+   "literal": "none",
+   "resource": "path-prefix"
+  }
+ ],
+ "constants": [
+  {
+   "forms": [
+    "disco"
+   ],
+   "sort": "filesystem",
+   "resource": {
+    "path": "/"
+   }
+  }
+ ],
+ "predicates": [
+  {
+   "forms": [
+    "vacío",
+    "vacía"
+   ],
+   "subject": [
+    "file",
+    "directory"
+   ],
+   "labels": {},
+   "required": [],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  }
+ ],
+ "ops": [
+  {
+   "forms": {
+    "base": "abre",
+    "s": "abre",
+    "past": "abrió",
+    "ing": "abriendo",
+    "pp": "abierto"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": false,
+    "resource": "same(object)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "lee",
+    "s": "lee",
+    "past": "leyó",
+    "ing": "leyendo",
+    "pp": "leído"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": "read",
+   "claimLabels": [
+    "de"
+   ]
+  },
+  {
+   "forms": {
+    "base": "escribe",
+    "s": "escribe",
+    "past": "escribió",
+    "ing": "escribiendo",
+    "pp": "escrito"
+   },
+   "object": [
+    "text",
+    "archive"
+   ],
+   "labels": {
+    "en": [
+     "file"
+    ]
+   },
+   "required": [
+    "object",
+    "en"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "write",
+     "on": "label:en"
+    }
+   ],
+   "names": "write",
+   "claimLabels": [
+    "en"
+   ]
+  },
+  {
+   "forms": {
+    "base": "copia",
+    "s": "copia",
+    "past": "copió",
+    "ing": "copiando",
+    "pp": "copiado"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {
+    "a": [
+     "directory"
+    ]
+   },
+   "required": [
+    "object",
+    "a"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": false,
+    "resource": "same(label:a)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    },
+    {
+     "kind": "write",
+     "on": "label:a"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "borra",
+    "s": "borra",
+    "past": "borró",
+    "ing": "borrando",
+    "pp": "borrado"
+   },
+   "object": [
+    "file",
+    "directory"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "delete",
+     "on": "object"
+    }
+   ],
+   "names": "delete",
+   "claimLabels": [
+    "de"
+   ]
+  },
+  {
+   "forms": {
+    "base": "lista",
+    "s": "lista",
+    "past": "listó",
+    "ing": "listando",
+    "pp": "listado"
+   },
+   "object": [
+    "directory"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": true,
+    "resource": "same(object)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "comprime",
+    "s": "comprime",
+    "past": "comprimió",
+    "ing": "comprimiendo",
+    "pp": "comprimido"
+   },
+   "object": [
+    "file",
+    "files"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "archive",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  }
+ ]
+}

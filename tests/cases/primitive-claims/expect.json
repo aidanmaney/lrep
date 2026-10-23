@@ -1,0 +1,16 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ],
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "never writes": false,
+    "never moves": false
+  }
+}

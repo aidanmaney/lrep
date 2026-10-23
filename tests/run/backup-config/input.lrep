@@ -1,0 +1,7 @@
+# Back up the config
+
+Read the file "/etc/app/config.json" as Config.
+Write Config to "/backup/config.json".
+If it fails, delete the file "/backup/config.json".
+
+This section only writes to "/backup" and never deletes from "/etc".

@@ -1,0 +1,5 @@
+# Case
+
+Open the file "/a" as Alpha.
+Delete the file.
+This section only deletes from "/a".

@@ -1,0 +1,5 @@
+# Case
+
+List the directory "/logs" as Logs.
+For each file in Logs, upload it to "s3://b/x".
+This section uploads at most 100 times.

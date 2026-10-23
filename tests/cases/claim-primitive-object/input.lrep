@@ -1,0 +1,4 @@
+# Case
+
+Delete the file "/tmp/a".
+This section never deletes "/etc" and only deletes "/tmp".

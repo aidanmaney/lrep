@@ -1,0 +1,5 @@
+node_modules/@vscode/vsce/**
+node_modules/@vscode/test-electron/**
+test/**
+*.vsix
+.vscode-test/**

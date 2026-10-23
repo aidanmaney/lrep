@@ -1,0 +1,8 @@
+{
+  "codes": [],
+  "claims": {
+    "only writes to \"/var/cache\"": true,
+    "never connects": true,
+    "never writes": true
+  }
+}

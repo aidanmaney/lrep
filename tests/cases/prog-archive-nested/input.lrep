@@ -1,0 +1,10 @@
+# Archive old data
+
+List the directory "/data" as Data.
+
+For each file in Data:
+- If it is older than 1 week:
+  - Compress it, then upload it to "s3://archive/data".
+  - Delete the file.
+
+This section only writes to "s3://archive" and only deletes from "/data".

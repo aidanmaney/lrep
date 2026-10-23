@@ -1,0 +1,11 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "only writes to \"s3://acme-logs/app\"": false
+  }
+}

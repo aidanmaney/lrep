@@ -1,0 +1,4 @@
+# Case
+
+Read the file "/missing.txt".
+If it fails, copy the file "/fallback.txt" to "/out".

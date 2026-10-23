@@ -1,0 +1,8 @@
+# Clean old temp files
+
+List the directory "/var/tmp/app" as Scratch.
+
+For each file in Scratch:
+- If it is older than 3 days or it is larger than 500 MB, delete it.
+
+This section only deletes from "/var/tmp/app" and never writes.

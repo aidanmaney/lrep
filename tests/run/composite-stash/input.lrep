@@ -1,0 +1,4 @@
+# Case
+
+Stash the file "/a.txt" to "/keep".
+This section only deletes from "/a.txt".

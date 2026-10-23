@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "only connects to \"https://status.example.com\" and \"s3://mirror\"": true,
+    "never deletes": true
+  }
+}

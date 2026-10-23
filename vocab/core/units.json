@@ -1,0 +1,19 @@
+{
+  "vocabulary": "core.units",
+  "version": "0.1.0",
+  "sorts": [
+    {"name": "duration", "forms": [], "literal": "none", "resource": "none"},
+    {"name": "size", "forms": [], "literal": "none", "resource": "none"}
+  ],
+  "units": [
+    {"forms": ["second", "seconds"], "scale": 1, "sort": "duration"},
+    {"forms": ["minute", "minutes"], "scale": 60, "sort": "duration"},
+    {"forms": ["hour", "hours"], "scale": 3600, "sort": "duration"},
+    {"forms": ["day", "days"], "scale": 86400, "sort": "duration"},
+    {"forms": ["week", "weeks"], "scale": 604800, "sort": "duration"},
+    {"forms": ["byte", "bytes"], "scale": 1, "sort": "size"},
+    {"forms": ["KB"], "scale": 1000, "sort": "size"},
+    {"forms": ["MB"], "scale": 1000000, "sort": "size"},
+    {"forms": ["GB"], "scale": 1000000000, "sort": "size"}
+  ]
+}

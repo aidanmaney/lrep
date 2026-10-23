@@ -1,0 +1,4 @@
+# Case
+
+Read the file "/tmp/a.txt", then upload it to "s3://acme-logs/app2".
+This section only writes to "s3://acme-logs/app".

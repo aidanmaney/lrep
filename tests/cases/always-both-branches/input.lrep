@@ -1,0 +1,6 @@
+# Case
+
+Open the file "/a".
+If it is empty, delete it.
+Otherwise, move it to "/old".
+This section always deletes.

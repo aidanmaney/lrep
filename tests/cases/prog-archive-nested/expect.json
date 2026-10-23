@@ -1,0 +1,8 @@
+{
+  "codes": [],
+  "claims": {
+    "only writes to \"s3://archive\"": true,
+    "only deletes from \"/data\"": true
+  },
+  "residue": "# Archive old data\n\nList directory \"/data\" as Data.\nFor each file in Data:\n- If it is older than 1 week:\n  - Compress it, then upload it to \"s3://archive/data\".\n  - Delete file.\nThis section only writes to \"s3://archive\" and only deletes from \"/data\".\n"
+}

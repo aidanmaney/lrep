@@ -1,0 +1,4 @@
+# Case
+
+Open the file "/tmp/a.txt".
+If it is empty, then delete it.

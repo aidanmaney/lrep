@@ -1,0 +1,44 @@
+{
+  "vocabulary": "core.net",
+  "version": "0.1.0",
+  "sorts": [
+    {"name": "port", "forms": ["port", "ports"], "literal": "int", "resource": "port"},
+    {"name": "host", "forms": ["host", "hosts"], "literal": "string", "resource": "host"},
+    {"name": "url", "forms": ["url", "urls"], "literal": "url", "resource": "url"},
+    {"name": "transport", "forms": [], "literal": "none", "resource": "none"},
+    {"name": "service", "forms": ["service", "services"], "literal": "none", "resource": "none"}
+  ],
+  "constants": [
+    {"forms": ["websocket"], "sort": "transport"},
+    {"forms": ["http"], "sort": "transport"}
+  ],
+  "ops": [
+    {"forms": {"base": "serve", "s": "serves", "past": "served", "ing": "serving"},
+     "object": ["file", "text", "archive"], "labels": {"over": ["transport"], "on": ["port"]},
+     "required": ["object", "over", "on"],
+     "returns": {"sort": "service", "list": false, "resource": "none"},
+     "effects": [{"kind": "read", "on": "object"}, {"kind": "listen", "on": "label:on"}],
+     "names": null},
+    {"forms": {"base": "listen", "s": "listens", "past": "listened", "ing": "listening"},
+     "object": [], "labels": {"on": ["port"]}, "required": ["on"],
+     "returns": {"sort": "service", "list": false, "resource": "none"},
+     "effects": [{"kind": "listen", "on": "label:on"}],
+     "names": "listen", "claimLabels": ["on"]},
+    {"forms": {"base": "fetch", "s": "fetches", "past": "fetched", "ing": "fetching"},
+     "object": ["url"], "labels": {}, "required": ["object"],
+     "returns": {"sort": "text", "list": false, "resource": "none"},
+     "effects": [{"kind": "connect", "on": "object"}],
+     "names": null},
+    {"forms": {"base": "connect", "s": "connects", "past": "connected", "ing": "connecting"},
+     "object": [], "labels": {"to": ["host", "url"]}, "required": ["to"],
+     "returns": null,
+     "effects": [{"kind": "connect", "on": "label:to"}],
+     "names": "connect", "claimLabels": ["to"]},
+    {"forms": {"base": "upload", "s": "uploads", "past": "uploaded", "ing": "uploading"},
+     "object": ["file", "text", "archive"], "labels": {"to": ["url"]}, "required": ["object", "to"],
+     "returns": null,
+     "effects": [{"kind": "read", "on": "object"}, {"kind": "write", "on": "label:to"},
+                 {"kind": "connect", "on": "label:to"}],
+     "names": null}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "always uploads to \"s3://b\"": true,
+    "always writes to \"s3://other\"": false
+  }
+}

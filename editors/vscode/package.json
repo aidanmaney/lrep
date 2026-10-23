@@ -1,0 +1,132 @@
+{
+  "name": "lrep",
+  "displayName": "lrep",
+  "description": "Highlighting, diagnostics, hover and claim status for lrep, a checked language whose source is constrained English",
+  "version": "0.2.0",
+  "publisher": "aidanmaney",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "lrep",
+        "aliases": [
+          "lrep"
+        ],
+        "extensions": [
+          ".lrep"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "lrep",
+        "scopeName": "source.lrep",
+        "path": "./syntaxes/lrep.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "lrep",
+      "properties": {
+        "lrep.serverPath": {
+          "type": "string",
+          "default": "lrep",
+          "markdownDescription": "The `lrep` executable, run as `lrep lsp`. Use an absolute path if `lrep` isn't on your `PATH`."
+        }
+      }
+    },
+    "semanticTokenTypes": [
+      {
+        "id": "lrepProgram",
+        "description": "An lrep program word: one the compiler reads"
+      },
+      {
+        "id": "lrepClaim",
+        "superType": "keyword",
+        "description": "An lrep claim word: never, only, always, at most"
+      }
+    ],
+    "semanticTokenModifiers": [
+      {
+        "id": "op",
+        "description": "An lrep op word"
+      },
+      {
+        "id": "predicate",
+        "description": "An lrep predicate word"
+      },
+      {
+        "id": "sort",
+        "description": "An lrep sort word"
+      },
+      {
+        "id": "constant",
+        "description": "An lrep constant word"
+      },
+      {
+        "id": "qualifier",
+        "description": "An lrep qualifier word"
+      },
+      {
+        "id": "name",
+        "description": "An lrep name word"
+      },
+      {
+        "id": "structure",
+        "description": "An lrep structure word"
+      },
+      {
+        "id": "label",
+        "description": "An lrep label word"
+      }
+    ],
+    "configurationDefaults": {
+      "[lrep]": {
+        "editor.semanticHighlighting.enabled": true
+      },
+      "editor.semanticTokenColorCustomizations": {
+        "rules": {
+          "lrepProgram:lrep": {
+            "bold": true,
+            "italic": false
+          },
+          "lrepClaim:lrep": {
+            "bold": true,
+            "italic": false
+          },
+          "string:lrep": {
+            "bold": true
+          },
+          "number:lrep": {
+            "bold": true
+          },
+          "comment:lrep": {
+            "italic": true
+          }
+        }
+      }
+    }
+  },
+  "scripts": {
+    "grammar": "../../.lake/build/bin/lrep grammar --calm > syntaxes/lrep.tmLanguage.json",
+    "package": "npm run grammar && vsce package --allow-missing-repository --skip-license",
+    "test": "node test/run.js"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.2.0"
+  },
+  "license": "MIT"
+}

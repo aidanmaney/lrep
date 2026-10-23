@@ -1,0 +1,8 @@
+{
+  "changes": [
+    [
+      true,
+      "op \"move\" no longer declares delete object"
+    ]
+  ]
+}

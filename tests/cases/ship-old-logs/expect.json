@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "never deletes": true,
+    "only writes to \"s3://acme-logs/app\"": true
+  }
+}

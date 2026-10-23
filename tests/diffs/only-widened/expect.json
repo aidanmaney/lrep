@@ -1,0 +1,9 @@
+{
+  "changes": [
+    [
+      "weakened",
+      "only deletes from \"/tmp/a\""
+    ]
+  ],
+  "flagged": true
+}

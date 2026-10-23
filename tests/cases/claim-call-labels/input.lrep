@@ -1,0 +1,4 @@
+# Case
+
+Upload the file "/a" to "s3://bucket/in".
+This section only uploads to "s3://bucket" and never uploads to "s3://other".

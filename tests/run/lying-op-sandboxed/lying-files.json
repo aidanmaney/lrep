@@ -1,0 +1,385 @@
+{
+ "vocabulary": "lying.files",
+ "version": "0.1.0",
+ "sorts": [
+  {
+   "name": "file",
+   "forms": [
+    "file",
+    "files"
+   ],
+   "literal": "path",
+   "resource": "path-exact"
+  },
+  {
+   "name": "directory",
+   "forms": [
+    "directory",
+    "directories"
+   ],
+   "literal": "path",
+   "resource": "path-prefix"
+  },
+  {
+   "name": "archive",
+   "forms": [
+    "archive",
+    "archives"
+   ],
+   "literal": "none",
+   "resource": "none"
+  },
+  {
+   "name": "text",
+   "forms": [
+    "text"
+   ],
+   "literal": "none",
+   "resource": "none"
+  },
+  {
+   "name": "filesystem",
+   "forms": [],
+   "literal": "none",
+   "resource": "path-prefix"
+  }
+ ],
+ "units": [],
+ "constants": [
+  {
+   "forms": [
+    "disk"
+   ],
+   "sort": "filesystem",
+   "resource": {
+    "path": "/"
+   }
+  }
+ ],
+ "predicates": [
+  {
+   "forms": [
+    "empty"
+   ],
+   "subject": [
+    "file",
+    "directory"
+   ],
+   "labels": {},
+   "required": [],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  },
+  {
+   "forms": [
+    "missing"
+   ],
+   "subject": [
+    "file",
+    "directory"
+   ],
+   "labels": {},
+   "required": [],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  },
+  {
+   "forms": [
+    "older"
+   ],
+   "subject": [
+    "file",
+    "directory"
+   ],
+   "labels": {
+    "than": [
+     "duration"
+    ]
+   },
+   "required": [
+    "than"
+   ],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  },
+  {
+   "forms": [
+    "larger"
+   ],
+   "subject": [
+    "file"
+   ],
+   "labels": {
+    "than": [
+     "size"
+    ]
+   },
+   "required": [
+    "than"
+   ],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  }
+ ],
+ "ops": [
+  {
+   "forms": {
+    "base": "open",
+    "s": "opens",
+    "past": "opened",
+    "ing": "opening"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": false,
+    "resource": "same(object)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "read",
+    "s": "reads",
+    "past": "read",
+    "ing": "reading"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": "read",
+   "claimLabels": [
+    "from"
+   ]
+  },
+  {
+   "forms": {
+    "base": "write",
+    "s": "writes",
+    "past": "wrote",
+    "ing": "writing",
+    "pp": "written"
+   },
+   "object": [
+    "text",
+    "archive"
+   ],
+   "labels": {
+    "to": [
+     "file"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "write",
+     "on": "label:to"
+    }
+   ],
+   "names": "write",
+   "claimLabels": [
+    "to"
+   ]
+  },
+  {
+   "forms": {
+    "base": "copy",
+    "s": "copies",
+    "past": "copied",
+    "ing": "copying"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {
+    "to": [
+     "directory"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": false,
+    "resource": "same(label:to)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    },
+    {
+     "kind": "write",
+     "on": "label:to"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "move",
+    "s": "moves",
+    "past": "moved",
+    "ing": "moving"
+   },
+   "object": [
+    "file"
+   ],
+   "labels": {
+    "to": [
+     "directory"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": false,
+    "resource": "same(label:to)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    },
+    {
+     "kind": "write",
+     "on": "label:to"
+    },
+    {
+     "kind": "delete",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "delete",
+    "s": "deletes",
+    "past": "deleted",
+    "ing": "deleting"
+   },
+   "object": [
+    "file",
+    "directory"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": null,
+   "effects": [],
+   "names": "delete",
+   "claimLabels": [
+    "from"
+   ]
+  },
+  {
+   "forms": {
+    "base": "list",
+    "s": "lists",
+    "past": "listed",
+    "ing": "listing"
+   },
+   "object": [
+    "directory"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "file",
+    "list": true,
+    "resource": "same(object)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "compress",
+    "s": "compresses",
+    "past": "compressed",
+    "ing": "compressing"
+   },
+   "object": [
+    "file",
+    "files"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "archive",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  }
+ ]
+}

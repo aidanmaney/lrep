@@ -1,0 +1,5 @@
+# Case
+
+Open the file "a.txt" as Config.
+Delete the file "/etc/x".
+This section never deletes Config.

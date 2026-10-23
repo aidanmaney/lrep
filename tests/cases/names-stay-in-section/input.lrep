@@ -1,0 +1,7 @@
+# One
+
+List the directory "/tmp" as Temp.
+
+# Two
+
+For each file in Temp, delete it.

@@ -1,0 +1,8 @@
+{
+  "codes": [],
+  "claims": {
+    "never uploads": true,
+    "never deletes from \"/srv\"": true,
+    "only writes to \"/srv/releases\" and \"/build/shipped\"": true
+  }
+}

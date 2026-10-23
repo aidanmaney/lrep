@@ -1,0 +1,11 @@
+{
+  "codes": [
+    [
+      "E024",
+      5
+    ]
+  ],
+  "claims": {
+    "never deleted from \"/var\"": true
+  }
+}

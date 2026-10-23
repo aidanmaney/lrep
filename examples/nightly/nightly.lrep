@@ -1,0 +1,34 @@
+# Ship last week's logs
+
+List the log directory "/var/log/app" as Logs.
+
+For each file in Logs:
+- If it is older than 7 days:
+  - Compress the log file, then upload it to the backup url "s3://acme-backups/logs", then delete the log file.
+    If it fails, connect to "https://hooks.example.com/oncall" (nothing is removed unless its archive arrived).
+
+This section only reads from the log directory "/var/log/app" and only deletes from "/var/log/app" and only connects to "s3://acme-backups" and "https://hooks.example.com" and never runs.
+
+# Back up the config
+
+Read the config file "/etc/app/config.json" as Settings.
+Write Settings to the backup file "/backup/config.json".
+If it fails, delete the backup file "/backup/config.json" because a truncated backup misleads whoever restores it.
+
+This section never deletes from "/etc" and only writes to the backup directory "/backup" and always reads from "/etc/app".
+
+# Clear stale scratch space
+
+List the temporary directory "/var/tmp/app" as Leftovers.
+
+For each file in Leftovers:
+- If the temporary file is older than 3 days or it is larger than 2 GB, delete it.
+
+This section only deletes from "/var/tmp/app" and never connects.
+
+# Publish the status page
+
+Fetch the url "https://status.example.com/index.html" as Page.
+Upload the public Page to "https://cdn.example.com/status/index.html".
+
+This section only connects to "https://status.example.com" and "https://cdn.example.com" and uploads at most 1 times.

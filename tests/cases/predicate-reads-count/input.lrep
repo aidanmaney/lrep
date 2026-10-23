@@ -1,0 +1,5 @@
+# Case
+
+Open the file "/data/a".
+If it is missing, delete it.
+This section only reads from "/data".

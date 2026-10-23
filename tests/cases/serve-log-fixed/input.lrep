@@ -1,0 +1,6 @@
+# Serve the log
+
+Open the log file "/var/data/foo.out", then serve it over a websocket on port 443
+(the corporate firewall blocks the others).
+
+This section never writes to disk and only reads from "/var/data".

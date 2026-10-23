@@ -1,0 +1,6 @@
+{
+  "codes": [],
+  "claims": {
+    "only connects to \"https://db.internal\"": true
+  }
+}

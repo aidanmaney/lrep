@@ -1,0 +1,4 @@
+# Case
+
+Ship the file "/var/log/a.log" to "s3://logs/app".
+This section only writes to "s3://logs" and never deletes from "/var/log" and never ships.

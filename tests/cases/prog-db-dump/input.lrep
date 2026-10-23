@@ -1,0 +1,6 @@
+# Dump the database
+
+Run the command "pg_dump prod" as Dump.
+Upload Dump to "s3://backups/db".
+
+This section only writes to "s3://backups".

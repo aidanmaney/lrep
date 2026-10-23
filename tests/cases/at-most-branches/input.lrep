@@ -1,0 +1,6 @@
+# Case
+
+Open the file "/a".
+If it is empty, upload it to "s3://b/x".
+Otherwise, upload it to "s3://b/y".
+This section uploads at most 1 times.

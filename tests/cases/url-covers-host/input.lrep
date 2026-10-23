@@ -1,0 +1,4 @@
+# Case
+
+Connect to "s3://acme-logs/app".
+This section only connects to "s3://acme-logs".

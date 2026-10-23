@@ -1,0 +1,5 @@
+# Case
+
+Open the file "/a.txt".
+If it is empty, delete it.
+Otherwise, move it to "/done".

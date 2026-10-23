@@ -1,0 +1,12 @@
+# Fetch the feed
+
+Fetch the url "https://feeds.example.com/rss" as Feed.
+Write Feed to "/var/cache/feed.xml".
+
+This section only writes to "/var/cache".
+
+# Serve the cache
+
+Open the file "/var/cache/feed.xml", then serve it over http on port 80.
+
+This section never connects and never writes.

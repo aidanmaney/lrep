@@ -1,0 +1,4 @@
+# Case
+
+Read the secret file "/etc/secrets/key.pem" as Key.
+Upload the public Key to "https://cdn.example.com/k".

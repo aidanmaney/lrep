@@ -1,0 +1,9 @@
+{
+  "changes": [
+    [
+      "weakened",
+      "deletes at most 1"
+    ]
+  ],
+  "flagged": true
+}

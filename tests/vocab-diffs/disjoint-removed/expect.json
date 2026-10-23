@@ -1,0 +1,8 @@
+{
+  "changes": [
+    [
+      true,
+      "\"secret\" and \"public\" no longer exclude each other"
+    ]
+  ]
+}

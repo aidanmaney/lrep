@@ -1,0 +1,4 @@
+# Case
+
+Read the file "/var/db/production.db" as Snapshot.
+Write the log Snapshot to "/tmp/out.txt".

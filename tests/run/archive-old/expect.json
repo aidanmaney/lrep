@@ -1,0 +1,9 @@
+{
+  "completed": [
+    true
+  ],
+  "sandbox": false,
+  "files": {
+    "/archive/old.arc": "--- a.log 5\nhello\n"
+  }
+}

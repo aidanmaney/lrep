@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "never listens on port 80": true,
+    "only listens on port 8080": true
+  }
+}

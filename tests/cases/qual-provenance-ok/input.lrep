@@ -1,0 +1,4 @@
+# Case
+
+Read the file "/var/log/app.log" as Recent.
+Write the log Recent to the backup file "/backup/app.log".

@@ -1,0 +1,4 @@
+# Case
+
+Open the file "/a".
+If it is older than 5 MB, delete it.

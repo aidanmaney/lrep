@@ -1,0 +1,4 @@
+# Case
+
+Open the log file "foo.out", then serve it over a websocket on port 443.
+This section only reads from "/var/data".

@@ -1,0 +1,9 @@
+{
+  "completed": [
+    false
+  ],
+  "sandbox": true,
+  "files": {
+    "/a.txt": "keep me"
+  }
+}

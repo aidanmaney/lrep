@@ -1,0 +1,4 @@
+{
+  "codes": [],
+  "residue": "# Case\n\nCopy config file \"/etc/app/config.json\" to backup directory \"/backup\".\n"
+}

@@ -1,0 +1,12 @@
+{
+  "completed": [
+    true
+  ],
+  "sandbox": false,
+  "files": {
+    "/keep/a.txt": "A"
+  },
+  "absent": [
+    "/a.txt"
+  ]
+}

@@ -1,0 +1,5 @@
+# Case
+
+Open the file "/a".
+If it is empty, delete it.
+If it fails, delete the file "/b".

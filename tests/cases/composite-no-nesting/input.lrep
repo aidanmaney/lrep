@@ -1,0 +1,3 @@
+# Case
+
+Ship the file "/var/log/a.log" to "s3://logs/app".

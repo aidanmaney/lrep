@@ -1,0 +1,7 @@
+# Case
+
+Open the file "/tmp/a.txt".
+If it is empty:
+- Delete it.
+Otherwise:
+- Copy it to "/backup".

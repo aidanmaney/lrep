@@ -1,0 +1,4 @@
+# Case
+
+Run the command "cat /var/log/x" as Captured.
+Write the log Captured to "/backup/x".

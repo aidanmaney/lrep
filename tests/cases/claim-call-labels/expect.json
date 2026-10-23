@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "only uploads to \"s3://bucket\"": true,
+    "never uploads to \"s3://other\"": true
+  }
+}

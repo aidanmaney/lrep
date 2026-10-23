@@ -1,0 +1,4 @@
+# Case
+
+Upload the file "/a" to "s3://b/in".
+This section always uploads to "s3://b" and always writes to "s3://other".

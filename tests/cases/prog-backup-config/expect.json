@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "only writes to \"/backup\"": true,
+    "never deletes from \"/etc\"": true
+  }
+}

@@ -1,0 +1,4 @@
+# Case
+
+List the directory "/tmp" as Temp.
+If them are empty, delete the directory "/tmp".

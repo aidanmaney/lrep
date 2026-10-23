@@ -1,0 +1,7 @@
+{
+  "codes": [],
+  "claims": {
+    "only deletes from \"/var/tmp/app\"": true,
+    "never writes": true
+  }
+}

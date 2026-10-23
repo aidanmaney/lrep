@@ -1,0 +1,4 @@
+# Case
+
+Open the log file "/var/log/a.log" (the old one), then delete it.
+This section deletes at most 1 times.

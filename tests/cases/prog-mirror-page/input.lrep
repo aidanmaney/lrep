@@ -1,0 +1,6 @@
+# Mirror the status page
+
+Fetch the url "https://status.example.com/index.html" as Page.
+Upload Page to "s3://mirror/status".
+
+This section only connects to "https://status.example.com" and "s3://mirror" and never deletes.

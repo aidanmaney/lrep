@@ -1,0 +1,5 @@
+# Case
+
+List the directory "/tmp" as Temp.
+For each file in Temp, delete it.
+This section always deletes.

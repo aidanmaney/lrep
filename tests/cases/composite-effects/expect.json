@@ -1,0 +1,17 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ],
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "only writes to \"s3://logs\"": true,
+    "never deletes from \"/var/log\"": false,
+    "never ships": false
+  }
+}

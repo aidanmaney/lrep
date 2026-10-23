@@ -1,0 +1,5 @@
+# Case
+
+Fetch the url "https://a.com/x" as Page.
+If it fails, delete the file "/tmp/flag".
+This section always connects.

@@ -1,0 +1,11 @@
+{
+  "codes": [
+    [
+      "E040",
+      5
+    ]
+  ],
+  "claims": {
+    "uploads at most 100": false
+  }
+}

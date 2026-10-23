@@ -1,0 +1,10 @@
+{
+  "completed": [
+    true
+  ],
+  "sandbox": false,
+  "files": {
+    "/backup/config.json": "port=80",
+    "/etc/app/config.json": "port=80"
+  }
+}

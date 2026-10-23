@@ -1,0 +1,6 @@
+{
+  "codes": [],
+  "claims": {
+    "only deletes from \"/a\"": true
+  }
+}

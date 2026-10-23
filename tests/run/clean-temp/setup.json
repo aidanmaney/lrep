@@ -1,0 +1,9 @@
+{
+  "files": {
+    "/var/tmp/app/old.log": "x",
+    "/var/tmp/app/new.log": "y"
+  },
+  "old": [
+    "/var/tmp/app/old.log"
+  ]
+}

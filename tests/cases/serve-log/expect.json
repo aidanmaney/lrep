@@ -1,0 +1,13 @@
+{
+  "codes": [
+    [
+      "E040",
+      6
+    ]
+  ],
+  "claims": {
+    "never writes to disk": true,
+    "only reads from \"/var/data\"": false
+  },
+  "residue": "# Serve the log\n\nOpen file \"foo.out\", then serve it over websocket on port 443.\nThis section never writes to disk and only reads from \"/var/data\".\n"
+}

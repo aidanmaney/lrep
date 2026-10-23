@@ -1,0 +1,5 @@
+# Case
+
+Open the file "/a".
+If it is empty, delete it.
+This section always deletes.

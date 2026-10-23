@@ -1,0 +1,11 @@
+{
+  "codes": [
+    [
+      "E040",
+      4
+    ]
+  ],
+  "claims": {
+    "only reads from \"/var/data\"": false
+  }
+}

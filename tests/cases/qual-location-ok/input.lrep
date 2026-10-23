@@ -1,0 +1,3 @@
+# Case
+
+Copy the config file "/etc/app/config.json" to the backup directory "/backup".

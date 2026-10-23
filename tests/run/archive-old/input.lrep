@@ -1,0 +1,5 @@
+# Case
+
+List the directory "/data" as Data.
+For each file in Data:
+- If it is older than 1 week, compress it, then write it to "/archive/old.arc".

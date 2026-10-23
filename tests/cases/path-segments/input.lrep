@@ -1,0 +1,4 @@
+# Case
+
+Delete the file "/var/database/x".
+This section never deletes from "/var/data".

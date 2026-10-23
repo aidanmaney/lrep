@@ -1,0 +1,5 @@
+# Case
+
+List the directory "/var/log/app" as Logs.
+For each file in Logs:
+- Compress the log file, then upload it to "s3://acme-backups/logs".
