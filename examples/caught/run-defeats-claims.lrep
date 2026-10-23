@@ -1,0 +1,5 @@
+# Rebuild the site
+
+Run the command "make site".
+
+This section only writes to "/srv/site".

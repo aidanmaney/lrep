@@ -1,0 +1,6 @@
+# Check the API
+
+Connect to "https://api.example.com".
+If it fails, run the command "notify-oncall api-down" because nobody watches the dashboard at night.
+
+This section always connects.

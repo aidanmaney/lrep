@@ -1,0 +1,2 @@
+{"vocabularies": ["../vocab/core/files.json", "../vocab/core/units.json", "../vocab/core/net.json",
+                  "../vocab/core/proc.json", "../vocab/examples/places.json"]}

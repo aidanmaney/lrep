@@ -1,0 +1,6 @@
+# Copiar el registro
+
+Abre el archivo "/var/data/a.log" como Registro.
+Copia Registro a "/respaldo".
+
+Esta sección nunca borra y solo escribe en "/respaldo".

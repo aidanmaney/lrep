@@ -1,0 +1,8 @@
+# Retire last month's logs
+
+List the directory "/var/log/app" as Logs.
+
+For each file in Logs:
+- If it is older than 30 days, retire it to "s3://acme-backups/old-logs".
+
+This section only deletes from "/var/log/app" and only writes to "s3://acme-backups" and never runs.

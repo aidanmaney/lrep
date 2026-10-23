@@ -1,0 +1,6 @@
+# Mirror the status page
+
+Fetch the url "https://status.example.com/index.html" as Page.
+Upload the public Page to "s3://acme-public/status/index.html".
+
+This section only connects to "https://status.example.com" and "s3://acme-public" and uploads at most 1 times.

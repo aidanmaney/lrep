@@ -232,6 +232,37 @@ def runVocabDiffChecks : IO Nat := do
   IO.println s!"{dirs.length - failed}/{dirs.length} vocab-diff checks passed"
   pure failed
 
+/-- Example checks: every program in `examples/` passes, except those in `caught/`, which
+fail with the codes `examples/README.md` shows. Bodies of composite ops (`vocab/`) aren't
+programs on their own. -/
+def exampleCodes : List (String × List String) :=
+  [("caught/claims-too-little.lrep", ["E040"]),
+   ("caught/misleading-words.lrep", ["E034", "E034", "E034"]),
+   ("caught/run-defeats-claims.lrep", ["E040"]),
+   ("caught/unknown-verb.lrep", ["E020"])]
+
+partial def lrepFiles (dir : System.FilePath) : IO (List System.FilePath) := do
+  let mut out := []
+  for e in ← dir.readDir do
+    if ← e.path.isDir then
+      if e.fileName != "vocab" then out := out ++ (← lrepFiles e.path)
+    else if e.path.extension == some "lrep" then out := out ++ [e.path]
+  pure out
+
+def runExampleChecks : IO Nat := do
+  let files := (← lrepFiles "examples").mergeSort fun a b => a.toString ≤ b.toString
+  let mut failed := 0
+  for f in files do
+    let rel := (f.toString.drop "examples/".length).toString
+    let r ← checkFile f.toString
+    let got := r.diags.filter Diagnostic.isError |>.map (·.code)
+    let want := (exampleCodes.lookup rel).getD []
+    if got != want then
+      failed := failed + 1
+      IO.println s!"FAIL  example {rel}: expected {want}, got {got}"
+  IO.println s!"{files.length - failed}/{files.length} example checks passed"
+  pure failed
+
 def main : IO UInt32 := do
   let root : System.FilePath := "tests/cases"
   let entries ← root.readDir
@@ -251,4 +282,5 @@ def main : IO UInt32 := do
   let runFailed ← runRuntimeChecks
   let auditFailed ← runAuditChecks
   let vocabFailed ← runVocabDiffChecks
-  pure (if failed + serverFailed + diffFailed + runFailed + auditFailed + vocabFailed == 0 then 0 else 1)
+  let exampleFailed ← runExampleChecks
+  pure (if failed + serverFailed + diffFailed + runFailed + auditFailed + vocabFailed + exampleFailed == 0 then 0 else 1)

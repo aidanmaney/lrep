@@ -1,0 +1,6 @@
+{
+ "language": "../../vocab/es/language.json",
+ "vocabularies": [
+  "../../vocab/es/archivos.json"
+ ]
+}

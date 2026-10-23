@@ -1,0 +1,8 @@
+# Clear out abandoned uploads
+
+List the temporary directory "/var/tmp/uploads" as Pending.
+
+For each file in Pending:
+- If it is empty or it is older than 2 days, delete it.
+
+This section only deletes from "/var/tmp/uploads" and never writes and never connects.

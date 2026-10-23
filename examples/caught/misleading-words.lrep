@@ -1,0 +1,5 @@
+# Archive old logs
+
+Read the backup file "/var/db/production.db" as Snapshot.
+Delete the temporary file "/var/db/production.db".
+Write the log Snapshot to "/tmp/logs/archive.txt".

@@ -1,0 +1,34 @@
+{
+  "vocabulary": "examples.retire",
+  "version": "0.1.0",
+  "ops": [
+    {
+      "forms": {
+        "base": "retire",
+        "s": "retires",
+        "past": "retired",
+        "ing": "retiring"
+      },
+      "object": [
+        "file"
+      ],
+      "labels": {
+        "to": [
+          "url"
+        ]
+      },
+      "required": [
+        "object",
+        "to"
+      ],
+      "body": {
+        "file": "retire.lrep",
+        "section": "Retire",
+        "params": {
+          "object": "Source",
+          "to": "Target"
+        }
+      }
+    }
+  ]
+}

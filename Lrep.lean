@@ -27,10 +27,17 @@ private def isRelativeText (t : String) : Bool :=
   !(t.startsWith "\"/") && !hasScheme t
 
 private def witnessMessage (w : Witness) : String :=
-  match w.text with
-  | some "" => w.verb
-  | some t => if w.res == .top && isRelativeText t then s!"{w.verb} {t}, a relative path" else s!"{w.verb} {w.res.show}"
-  | none => s!"{w.verb} {w.res.show}"
+  let what := match w.res with
+    | .path segs true => s!"something under \"{pathString segs}\""
+    | r => r.show
+  let base := match w.text with
+    | some "" => w.verb
+    | some t => if w.res == .top && isRelativeText t then s!"{w.verb} {t}, a relative path" else s!"{w.verb} {what}"
+    | none => s!"{w.verb} {what}"
+  -- The caret points at the value; name the step's line when it's elsewhere.
+  match w.origin with
+  | some o => if o.line != w.site.line then s!"{base} (on line {w.site.line})" else base
+  | none => base
 
 private def unquote (t : String) : String :=
   if t.startsWith "\"" && t.endsWith "\"" && t.length ≥ 2 then String.ofList (t.toList.drop 1).dropLast else t

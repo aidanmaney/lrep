@@ -1,0 +1,8 @@
+# Tidy the config
+
+List the directory "/etc/app" as Settings.
+
+For each file in Settings:
+- If it is empty, delete it.
+
+This section never deletes from "/etc".

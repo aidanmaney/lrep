@@ -1,0 +1,3 @@
+# Share the report
+
+Open the file "/srv/reports/weekly.txt", zip it, then upload it to "https://cdn.example.com/weekly".

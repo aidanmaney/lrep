@@ -1,0 +1,6 @@
+# Release the site
+
+Copy the file "/build/site/index.html" to "/srv/releases/current" as Release.
+Serve Release over http on port 8080 (the load balancer forwards port 80 here).
+
+This section only writes to "/srv/releases" and only listens on port 8080 and never deletes and never connects.

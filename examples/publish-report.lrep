@@ -1,0 +1,7 @@
+# Publish the weekly report
+
+Read the file "/srv/reports/weekly.txt" as Report.
+Upload the public Report to "https://cdn.example.com/reports/weekly.txt".
+If it fails, write Report to the backup file "/backup/reports/weekly.txt" (the next attempt starts from there).
+
+This section never deletes and only connects to "https://cdn.example.com" and only writes to "https://cdn.example.com" and "/backup".

@@ -65,7 +65,7 @@ The [language guide](docs/guide.md) explains how to write lrep. A VS Code extens
 | --- | --- |
 | `Lrep/` | The checker, language server, runtime and proof, in Lean |
 | `vocab/` | Vocabularies: the core one (files, units, network, processes), a Spanish demo, and example descriptive words |
-| `examples/` | Example programs |
+| `examples/` | [Example programs](examples/README.md), and programs the checker rejects |
 | `docs/` | The language guide |
 | `editors/vscode/` | The VS Code extension |
 | `tests/` | Test programs with expected results; `lake test` runs them |
