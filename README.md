@@ -1,6 +1,8 @@
 # lrep
 
-lrep is a small language for glue scripts: the ones that copy, back up and delete files. Programs are written in a restricted English. A checker verifies claims such as `never deletes from "/etc"` and rejects programs that break them.
+lrep is a small language for glue code: scripts that move data and trigger actions between files, services and commands, such as backups, syncs, cleanup jobs and deploy steps. Programs are written in a restricted English. A checker verifies claims such as `never deletes from "/etc"` and rejects programs that break them.
+
+lrep isn't for application logic. It has no arithmetic, string handling or open-ended loops, which is what keeps its claims provable; computation belongs in the ops a vocabulary provides.
 
 ```text
 # Back up the config
