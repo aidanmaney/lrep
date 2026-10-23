@@ -1,82 +1,63 @@
 # The lrep language guide
 
-lrep programs read like short English instructions. Under the prose is a strict program: a fixed set of words do the work, and everything else is description the checker ignores. This guide shows how to write one.
+An lrep program is a Markdown file of English sentences. A fixed set of words mean something to the checker; the rest is description. This guide covers the file format, statements, values, control flow, claims, and project configuration, then lists the word kinds and error codes for reference.
 
 ## A first program
 
 ```text
 # Ship old logs
 
-List the directory "/var/log/app" as Logs.
+List the application's log directory "/var/log/app" as Logs.
 
 For each file in Logs:
-- If it is older than 7 days, compress it, then upload it to "s3://acme-logs/app".
+- If it is older than 7 days, compress it, then upload it to the shared bucket url "s3://acme-logs/app".
 
 This section never deletes and only writes to "s3://acme-logs/app".
 ```
 
-Running `lrep residue` shows what the checker actually reads, with the description removed:
+`lrep residue` prints the program with the description removed:
 
 ```text
 List directory "/var/log/app" as Logs.
 For each file in Logs:
-- If it is older than 7 days, compress it, then upload it to "s3://acme-logs/app".
+- If it is older than 7 days, compress it, then upload it to url "s3://acme-logs/app".
 This section never deletes and only writes to "s3://acme-logs/app".
 ```
 
-## Files, sections and sentences
+"The application's log" and "the shared bucket" were description. Everything left is what runs, and the last sentence is a claim the checker verifies.
 
-A program is a Markdown file with a few rules:
+## Files and sections
 
-- **Headings** (`#` to `######`) start sections. Each section is checked on its own, and its heading is just a name.
-- **Sentences** end with a full stop. A sentence that ends with a colon is followed by a list, and each `- ` item holds one or more sentences. Indent a nested list by two more spaces.
-- Anything else Markdown offers, such as code blocks, quotes, tables, links and emphasis, is an error. So is text before the first heading.
-
-## Words
-
-Every word belongs to exactly one kind, decided by the word alone:
-
-| Kind | Examples | What it does |
-| --- | --- | --- |
-| Op | `copy`, `delete`, `upload` | Does something. Comes from a vocabulary |
-| Sort | `file`, `directory`, `url` | Names a type of value |
-| Predicate | `empty`, `older`, `larger` | Tests something in a condition |
-| Constant | `disk`, `websocket` | A fixed value |
-| Qualifier | `backup`, `log`, `temporary` | A checked description (see below) |
-| Structure | `then`, `if`, `for each`, `it`, `as` | Holds the program together |
-| Label | `to`, `from`, `on`, `than` | Names an argument (every preposition) |
-| Claim | `never`, `only`, `always`, `at most` | States a guarantee the checker proves |
-| Name | `Logs`, `Settings` | A value you named with `as` |
-| Literal | `"/var/log/app"`, `443` | A string or a number |
-| Gloss | `the`, `old`, `job` | Description. The checker ignores it |
-
-Words reserved by a vocabulary are never gloss, even in passing. If `open` is an op, "the open port" is an error: write "the unblocked port".
-
-## Values
-
-- **Strings** use straight double quotes: `"/var/log/app"`. Curly quotes are an error.
-- **Numbers** are numerals: `443`, `7 days`, `2 GB`. Number words like "seven" are errors.
-- **A sort before a value** says what it must be: `the file "/a.txt"`, `port 443`.
-- **A sort alone** means the one value of that sort in scope: `delete the file`. If there's none, or more than one, the checker asks you to name it.
-- **Names** come from `as`: `List the directory "/tmp" as Temp.` A name is capitalised and may not start a sentence.
-- **`it`** is the result of the previous step; **`them`** is the same, when the result is a list. After an `if` or a loop ends, `it` is gone.
-- **`and`** makes a list of values: `Compress "/a" and "/b".`
+- A heading (`#` to `######`) starts a section. Each section is checked separately, and its heading is only a name. Text before the first heading is an error.
+- A sentence ends with a full stop. A sentence that ends with a colon must be followed by a list; each `- ` item holds one or more sentences, and a nested list is indented two more spaces.
+- Other Markdown, such as code blocks, quotes, tables, links and emphasis, is an error.
 
 ## Statements
 
-Each clause has exactly one op, written as a command:
+A clause is the part of a sentence between commas, `then` and the full stop. Each clause has exactly one op, written as a command:
 
 ```text
 Open the file "/tmp/a.txt", then serve it over a websocket on port 8080.
 ```
 
-- Use the op's base form: "Write", not "Writes". "The job writes to disk" is an error, because a sentence that sounds like a description must not quietly act.
+- Use the op's base form: "Write", not "Writes". "The job writes to disk" is an error, because a sentence that reads as a description must not perform anything.
 - Join steps with `then`. A comma always ends a clause, and `and` never joins steps.
-- An op takes one unlabelled argument, its object, and labelled ones such as `to "/backup"` and `on port 443`.
+- An op takes at most one argument without a label, its object, and any number of labelled ones, such as `to "/backup"` and `on port 443`.
+
+## Values
+
+- Strings use straight double quotes: `"/var/log/app"`. Curly quotes are an error.
+- Numbers are numerals, optionally with a unit: `443`, `7 days`, `2 GB`. Number words such as "seven" are errors.
+- A sort word before a value says what the value must be: `the file "/a.txt"`, `port 443`.
+- A sort word alone refers to the one value of that sort in scope: `delete the file`. If there is none, or more than one, that's error E032; name the value with `as` instead.
+- `as` names a value: `List the directory "/tmp" as Temp.` A name is capitalised and can't start a sentence.
+- `it` is the result of the previous step; `them` is the same when the result is a list. After an `if` or a loop ends, there is no `it`.
+- `and` makes a list of values: `Compress "/a" and "/b".`
 
 ## Control
 
 ```text
+Open the file "/tmp/report.txt".
 If it is empty, delete it.
 Otherwise, move it to "/archive".
 
@@ -87,44 +68,61 @@ Copy the file "/a" to "/b".
 If it fails, delete the file "/b".
 ```
 
-- **Conditions** use `is` or `are`, optionally `not`, and a predicate: `if it is older than 7 days`. Combine tests with `and` or with `or`, never both.
-- **`Otherwise`** directly follows an `If` sentence.
-- **`For each`** walks a list that already exists. There are no other loops, so every program finishes.
-- **`If it fails`** directly follows a statement sentence and handles its failure. Otherwise a failed step stops the section.
-
-## Asides
-
-Explanations go in parentheses, or after "because" to the end of the sentence:
-
-```text
-Upload it to "s3://acme-logs/app" (the bucket keeps 90 days of history).
-Delete it because the archive already holds its contents.
-```
-
-Asides may not contain ops or claim words, so searching a file for `delete` finds only real deletes.
-
-## Forbidden words
-
-Some words are errors, each with a suggested fix: modals ("may", "should"), contractions ("don't"), most pronouns ("they", "this"), quantifiers ("all", "every") and number words. Each one either hides what a sentence does or can be said more precisely another way.
+- A condition is a subject, `is` or `are`, an optional `not`, and a predicate: `if it is older than 7 days`. Join tests with `and` or with `or`, but not both.
+- `Otherwise` must come directly after an `If` sentence.
+- `For each` steps through a list that already exists. It is the only loop, so loops always end. A single step, such as an HTTP request, can still take a long time.
+- `If it fails` is a fixed phrase. It must come directly after a statement sentence, and it runs if a step in that sentence fails. Without it, a failed step stops the section.
 
 ## Claims
 
-A sentence starting "This section" states guarantees about everything the section might do, on every path:
+A sentence that begins "This section" is a claim about every step the section might take, on every path:
 
 | Claim | Holds when |
 | --- | --- |
 | `never deletes from "/etc"` | No step can delete anything under `/etc` |
-| `only writes to "/backup"` | Every write lands under `/backup` |
+| `only writes to "/backup"` | Every write is under `/backup` |
 | `always reads from "/etc/app"` | Every run that finishes reads from `/etc/app` |
 | `uploads at most 3 times` | No run uploads more than 3 times |
 
-- A claim names an effect: `reads`, `writes`, `deletes`, `connects`, `listens` or `runs`. It can also name any op, such as `never uploads`.
-- A claim's strings are absolute paths, or URLs when they have a scheme.
-- Anything the checker can't pin down, such as a relative path or `run the command …`, could be anything, so claims about it fail rather than pass by accident.
+- A claim names an effect, `reads`, `writes`, `deletes`, `connects`, `listens` or `runs`, or any op, as in `never uploads`.
+- A string in a claim is a URL if it has a scheme, and otherwise an absolute path.
+- A relative path, or a `run the command …` step, has effects the checker can't determine, so any claim that depends on it fails.
+- `never` and `only` claims are covered by the proof in `Lrep/Sound.lean`. `always` and `at most` claims are checked, but the proof doesn't cover them yet.
 
-## Checked descriptions
+## Asides and forbidden words
 
-A vocabulary can turn descriptive words into **qualifiers**, whose meaning is checked:
+An explanation goes in parentheses, or after "because" to the end of the sentence:
+
+```text
+Upload Old to "s3://acme-logs/app" (the bucket keeps 90 days of history).
+Delete the file "/tmp/z" because the archive already holds its contents.
+```
+
+An aside can't contain ops or claim words, so searching a file for `delete` finds only real deletes.
+
+Some words are errors, each with a suggested fix: modals such as "may" and "should", contractions such as "don't", most pronouns such as "they" and "this", quantifiers such as "all" and "every", and number words. Each either hides what a sentence does or has a more precise replacement.
+
+## Vocabularies and projects
+
+A vocabulary is a JSON file that defines the words a program can use: ops, with their arguments and effects; sorts; predicates; constants; units; and checked descriptive words. Each op declares its effects, such as "reads its object" or "writes to its `to` argument". Claims are checked against those declarations, and the runtime stops an op that does anything else. An op can also be defined by a section of lrep, in which case its effects come from that section.
+
+A project's `lrep.json`, next to its programs, lists its vocabularies:
+
+```json
+{
+  "vocabularies": ["vocab/core/files.json", "vocab/core/net.json", "vocab/examples/places.json"],
+  "gloss": "strict"
+}
+```
+
+Without an `lrep.json`, the four core vocabularies (files, units, network, processes) load. Two optional keys:
+
+- `gloss` is `loose` (the default) or `strict`; see the next section.
+- `language` names a different natural language's word tables. English is the default; `vocab/es` is a Spanish demo.
+
+### Checked descriptive words
+
+A vocabulary can define descriptive words, called qualifiers, whose meaning the checker verifies:
 
 ```json
 "qualifiers": [
@@ -134,38 +132,42 @@ A vocabulary can turn descriptive words into **qualifiers**, whose meaning is ch
 "disjoint": [["production", "temporary"]]
 ```
 
-- `within` is where a value must live, so `the backup file "/var/db/prod.db"` is an error.
-- `from` is where its contents must come from, so calling the production database's contents "the log" is an error.
-- `disjoint` pairs can't describe the same value.
+- `within` lists where a value must be. `the backup file "/var/db/prod.db"` is an error.
+- `from` lists where a value's contents must come from. Calling the contents of the production database "the log" is an error.
+- A `disjoint` pair can't describe the same value.
 
-For even stricter projects, set `"gloss": "strict"` in `lrep.json`. Then a sentence may contain only program words, qualifiers and "a", "an" and "the". Every other description goes in an aside.
+With `"gloss": "strict"`, a sentence may contain only words the checker reads, qualifiers, and "a", "an" and "the". Any other description must go in an aside.
 
-## Projects and vocabularies
+## Reference
 
-A project's `lrep.json` sits next to its programs:
+### Word kinds
 
-```json
-{
-  "vocabularies": ["vocab/core/files.json", "vocab/core/net.json"],
-  "language": "vocab/es/language.json",
-  "gloss": "strict"
-}
-```
+The checker decides each word's kind from the word itself:
 
-- **`vocabularies`** lists the JSON files that define ops, sorts, predicates, constants, units and qualifiers. Without `lrep.json`, the four core vocabularies (files, units, network, processes) load.
-- **`language`** names the natural language's word tables; English is the default, and `vocab/es` is a Spanish demo.
-- **`gloss`** is `loose` (the default) or `strict`.
+| Kind | Examples | Meaning |
+| --- | --- | --- |
+| Op | `copy`, `delete`, `upload` | Performs an action. Defined in a vocabulary |
+| Sort | `file`, `directory`, `url` | A type of value |
+| Predicate | `empty`, `older`, `larger` | A test, used in conditions |
+| Constant | `disk`, `websocket` | A fixed value |
+| Qualifier | `backup`, `log`, `temporary` | A checked descriptive word |
+| Structure | `then`, `if`, `for each`, `it`, `as` | Connects the parts of a program |
+| Label | `to`, `from`, `on`, `than` | Names an argument. Every preposition is a label |
+| Claim | `never`, `only`, `always`, `at most` | Starts a claim |
+| Name | `Logs`, `Settings` | A value named with `as` |
+| Literal | `"/var/log/app"`, `443` | A string or a number |
+| Gloss | `the`, `old`, `job` | Description, which the checker ignores |
 
-Each op in a vocabulary declares its effects, such as "reads its object" or "writes to its `to` argument". Those declarations are what claims are checked against, and the runtime's sandbox enforces them. An op can also be defined by a section of lrep (a `body`), in which case its effects come from that section.
+A word that a vocabulary defines can't be used as description. If `open` is an op, "the open port" is an error; write "the unblocked port".
 
-## Errors
+### Error codes
 
-Every error has a code, and most suggest a fix.
+Most errors suggest a fix.
 
 | Code | Meaning |
 | --- | --- |
-| E001 | Markdown outside what lrep allows, or a `:` not followed by a list |
-| E002 | Text before the first heading, or two sections with one name |
+| E001 | Markdown that lrep doesn't allow, or a `:` not followed by a list |
+| E002 | Text before the first heading, or two sections with the same name |
 | E003 | An unsupported character, or curly quotes |
 | E004 | An unterminated string or parenthesis |
 | E010 | A forbidden word |
@@ -176,16 +178,16 @@ Every error has a code, and most suggest a fix.
 | E020 | A clause with no op |
 | E021 | A later clause without `then` |
 | E022 | `and` between steps |
-| E023 | `then` right after a condition |
+| E023 | `then` directly after a condition |
 | E024 | An op not in its base form |
 | E025 | A label the op doesn't take |
-| E026 | A second unlabelled argument |
+| E026 | A second argument without a label |
 | E027 | A missing argument, or `only` without a resource |
 | E028 | `Otherwise` or `If it fails` in the wrong place |
-| E029 | A condition mixing `and` and `or` |
+| E029 | A condition that mixes `and` and `or` |
 | E030 | A value of the wrong sort, or an invalid literal |
-| E031 | `it` or `them` with nothing to refer to, or the wrong one |
-| E032 | A description that matches no value, or several |
+| E031 | `it` or `them` with nothing to refer to, or the wrong one of the two |
+| E032 | A sort word that matches no value, or several |
 | E033 | A name declared twice |
 | E034 | A qualifier that doesn't fit its value |
 | E040 | A claim that doesn't hold |
@@ -193,6 +195,6 @@ Every error has a code, and most suggest a fix.
 | E050 | A broken vocabulary or project file |
 | W001 | A warning: a sentence over 25 words |
 
-## The guarantee
+### The guarantee
 
-`Lrep/Sound.lean` proves in Lean that if the checker accepts a `never` or `only` claim, no run of the section breaks it, on any path and any number of loop iterations, including runs that stop part-way. The one assumption is that each op does only what its vocabulary declares. The runtime enforces that assumption with a sandbox: an op that tries anything else is stopped.
+`Lrep/Sound.lean` proves in Lean that if the checker accepts a `never` or `only` claim, no run of the section breaks it. That covers every path and any number of loop iterations, including runs that stop part-way. The proof assumes each op does only what its vocabulary declares, and the runtime enforces that assumption by stopping any op that does something else.

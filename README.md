@@ -1,6 +1,6 @@
 # lrep
 
-**Glue code you can read once.** lrep is a small programming language for the scripts that move, copy, back up and delete things, written in plain English. Its checker proves what each program will and won't touch.
+lrep is a small language for glue scripts: the ones that copy, back up and delete files. Programs are written in a restricted English. A checker verifies claims such as `never deletes from "/etc"` and rejects programs that break them.
 
 ```text
 # Back up the config
@@ -12,85 +12,65 @@ If it fails, delete the backup file "/backup/config.json" because a truncated ba
 This section never deletes from "/etc" and only writes to the backup directory "/backup".
 ```
 
-That last sentence isn't a comment. It's a **claim**, and the checker proves it. Suppose someone edits the failure handler to delete the wrong file:
+The last sentence is a claim, and the checker verifies it. Change the failure handler to `If it fails, delete the backup file "/etc/app/config.json".` and checking fails:
 
 ```text
 error[E034]: "backup" describes "/etc/app/config.json", which is not within "/backup" or "s3://acme-backups"
 error[E040]: claim not satisfied: never deletes from "/etc"
 ```
 
-The program no longer compiles. The English said one thing and the code did another, so the checker refused it.
+The first error comes from the word "backup". This program's vocabulary, a JSON file that defines the words a program can use, says that backup files live under `/backup` or `s3://acme-backups`. The second error is the claim.
 
-## Why
+Glue scripts run with real permissions and get skimmed in review. lrep is designed so that a skim is reliable. A fixed set of words mean something to the checker: ops such as `copy` and `delete`, and words such as `then`, `if` and `for each`. Every other word is description, which the checker ignores, except for descriptive words like "backup" and "log" that a vocabulary defines and the checker verifies. Each sentence that begins "This section" is a claim, and the checker verifies it on every path through the section. `Lrep/Sound.lean` proves in Lean that an accepted `never` or `only` claim holds on every run, provided each op does only what its vocabulary declares. `always` and `at most` claims are checked but not covered by the proof.
 
-Shell scripts and cron jobs are where data goes missing. They're short, they run with real permissions, and reviewers skim them. lrep is built so that a skim is enough:
-
-- **Every word has one job.** A small, fixed set of words do things: ops like `copy` and `delete`, and words like `then`, `if` and `for each`. The rest is description that the checker ignores. There are no hidden meanings to work out.
-- **Claims are proved, not hoped.** `never deletes`, `only writes to "/backup"`, `always reads` and `uploads at most 3 times` are checked against every path through the program. If one could be false, the program doesn't compile.
-- **Descriptions are checked too.** Calling something "the backup file" is a promise about where it lives; calling it "the log" is a promise about where its contents came from. The checker holds the program to both.
-- **The guarantee is proved in Lean.** If the checker accepts a `never` or `only` claim, no run of the program can break it, assuming each operation does only what its definition declares.
-
-lrep is meant to be written by AI models and read by people. Strict rules cost a model a quick fix; they spare the reviewer from guessing.
+lrep is meant to be written by AI models and read by people. The rules are strict because the cost of strictness falls on the writer and the benefit on the reader.
 
 ## Try it
 
-You need [Lean 4](https://lean-lang.org/install/); the right version installs itself from `lean-toolchain`.
+Install [elan](https://github.com/leanprover/elan), the Lean version manager. `lake build` then installs the Lean 4 version named in `lean-toolchain` and builds lrep.
 
 ```bash
 git clone https://github.com/aidanmaney/lrep && cd lrep
-```
-
-```bash
 lake build
 ```
 
-Check the example, then see the program with the description stripped out, and what it touches:
+Check an example, show only the words the checker reads, and list what each section may touch:
 
 ```bash
 .lake/build/bin/lrep check examples/nightly/nightly.lrep
-```
-
-```bash
 .lake/build/bin/lrep residue examples/nightly/nightly.lrep
-```
-
-```bash
 .lake/build/bin/lrep effects examples/nightly/nightly.lrep
 ```
 
 | Command | What it does |
 | --- | --- |
-| `lrep check FILE` | Checks a program and reports errors and claims (`--json` for tools) |
-| `lrep residue FILE` | Shows just the program: the words the checker reads |
-| `lrep effects FILE` | Lists everything each section may read, write, delete or connect to |
-| `lrep dataflow FILE` | Draws which values feed which steps, as a Graphviz graph |
-| `lrep run --root DIR FILE` | Runs a checked program in a sandbox, with every path kept inside `DIR` |
-| `lrep diff OLD NEW` | Shows claims added, removed or weakened between two versions |
-| `lrep vocab-diff OLD NEW` | Shows what changed in a vocabulary's definitions |
-| `lrep audit FILE` | Asks Claude whether the remaining description matches what the program does |
+| `lrep check FILE` | Reports errors and whether each claim holds; `--json` for tools |
+| `lrep residue FILE` | Prints the program with the description removed |
+| `lrep effects FILE` | Lists what each section may read, write, delete or connect to |
+| `lrep dataflow FILE` | Prints a Graphviz graph of which values feed which steps |
+| `lrep run --root DIR FILE` | Runs a checked program, with every absolute path mapped inside `DIR` |
+| `lrep diff OLD NEW` | Lists claims added, removed, weakened or strengthened between two versions |
+| `lrep vocab-diff OLD NEW` | Lists changes to the descriptive words and op effects in a vocabulary |
+| `lrep audit FILE` | Asks Claude whether a program's description matches what it does. Needs `ANTHROPIC_API_KEY` or an `ant auth login` profile |
 | `lrep lsp` | Runs the language server for editors |
-| `lrep grammar` | Prints a TextMate grammar for highlighting |
+| `lrep grammar` | Prints a TextMate grammar for syntax highlighting |
 
-The [language guide](docs/guide.md) explains how to write lrep.
-
-## Editor support
-
-`editors/vscode` is a VS Code extension. It highlights what the checker reads in bold and leaves description plain, shows errors as you type, and explains on hover what each `it`, name and description refers to. It also shows each section's claims and effects above its heading. See its [README](editors/vscode/README.md) to install it.
+The [language guide](docs/guide.md) explains how to write lrep. A VS Code extension is in [editors/vscode](editors/vscode/README.md).
 
 ## What's here
 
 | Path | Contents |
 | --- | --- |
-| `Lrep/` | The checker, language server, runtime and proofs, in Lean |
+| `Lrep/` | The checker, language server, runtime and proof, in Lean |
 | `vocab/` | Vocabularies: the core one (files, units, network, processes), a Spanish demo, and example descriptive words |
 | `examples/` | Example programs |
 | `docs/` | The language guide |
 | `editors/vscode/` | The VS Code extension |
-| `tests/` | Test programs and their expected results; run them with `lake test` |
+| `tests/` | Test programs with expected results; `lake test` runs them |
 
 ## Status
 
-lrep is an experiment. The checker, proofs and editor support work, and `lake test` covers them. The runtime handles local files, commands and HTTP; it can't yet upload to S3 or run long-lived services such as web servers.
+lrep is an experiment. The checker, the proof for `never` and `only` claims, the language server, the VS Code extension and the tests are complete. The runtime is partial: it runs local file operations, commands and HTTP requests, but not S3 uploads or long-running services such as web servers.
 
 ## License
 
