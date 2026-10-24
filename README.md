@@ -48,6 +48,7 @@ Check an example, show only the words the checker reads, and list what each sect
 | --- | --- |
 | `lrep check FILE` | Reports errors and whether each claim holds; `--json` for tools |
 | `lrep residue FILE` | Prints the program with the description removed |
+| `lrep core FILE` | Prints the core program the checker works on: numbered values, labelled arguments, and one check per claim |
 | `lrep effects FILE` | Lists what each section may read, write, delete or connect to |
 | `lrep dataflow FILE` | Prints a Graphviz graph of which values feed which steps |
 | `lrep run --root DIR FILE` | Runs a checked program, with every absolute path mapped inside `DIR` |

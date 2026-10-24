@@ -26,6 +26,21 @@ This section never deletes and only writes to "s3://acme-logs/app".
 
 "The application's log" and "the shared bucket" were description. Everything left is what runs, and the last sentence is a claim the checker verifies.
 
+`lrep core` goes one step further and prints the program the checker actually works on. Names and `it` become numbered values, every argument is labelled, and each claim becomes a check on one kind of effect:
+
+```text
+section "Ship old logs"
+  v0 := list(directory "/var/log/app")
+  for v1 in v0 do
+    if older(v1, than: 7 days) then
+      v2 := compress(v1)
+      upload(v2, to: url "s3://acme-logs/app")
+    end
+  end
+  claim never delete
+  claim only write (to: url "s3://acme-logs/app")
+```
+
 ## Files and sections
 
 - A heading (`#` to `######`) starts a section. Each section is checked separately, and its heading is only a name. Text before the first heading is an error.
