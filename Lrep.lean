@@ -22,6 +22,8 @@ structure FileResult where
   refs : List (Span × String) := []
   /-- Each section's core AST, for the dataflow view and the runtime. -/
   cores : List CSection := []
+  /-- How many core statements each composite op's inlined body takes, for the core view. -/
+  bodyLens : List (String × Nat) := []
 
 private def isRelativeText (t : String) : Bool :=
   !(t.startsWith "\"/") && !hasScheme t
@@ -92,7 +94,8 @@ def checkSource (lex : Lexicon) (file : String) (src : String) : FileResult :=
   { file, lines, diags := sortDiags (templateDiags ++ doc.diags ++ tds ++ results.flatMap (·.2.1)),
     sections := results.map (·.1), tsections := tsecs,
     refs := results.flatMap (·.2.2.1) ++ (results.map (·.2.2.2)).flatMap (qualHovers lex),
-    cores := results.map (·.2.2.2) }
+    cores := results.map (·.2.2.2),
+    bodyLens := templates.map fun (n, t) => (n, t.stmts.length) }
 
 def FileResult.hasErrors (r : FileResult) : Bool := r.diags.any Diagnostic.isError
 

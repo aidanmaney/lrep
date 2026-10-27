@@ -111,14 +111,16 @@ def runServerChecks : IO Nat := do
   if !spans.any (fun (sp, ty, m) => sp.line == 3 && sp.col == 35 && ty == progIdx && m == opBit) then
     failed := failed + 1
     IO.println "FAIL  semantic tokens: serve is not a program word marked op"
-  -- The core view: the composite op's call, then its inlined body.
+  -- The core view: the composite op's call, then its inlined body indented under it,
+  -- with values numbered without gaps.
   let cr ← checkFile "examples/composite/retire-old-logs.lrep"
   let core := cr.coreText
-  for want in ["v0 := list(directory \"/var/log/app\")", "for v1 in v0 do", "retire(v1, to: url", "delete(v1)", "claim never spawn"] do
+  for want in ["v0 := list(directory \"/var/log/app\")", "for v1 in v0 do", "      retire(v1, to: url",
+               "        v2 := compress(v1)\n        upload(v2, to: url", "        delete(v1)\n    end", "claim never spawn"] do
     if (core.splitOn want).length < 2 then
       failed := failed + 1
       IO.println s!"FAIL  core view: missing {want}"
-  IO.println s!"{hoverChecks.length + 11 - failed}/{hoverChecks.length + 11} server and view checks passed"
+  IO.println s!"{hoverChecks.length + 12 - failed}/{hoverChecks.length + 12} server and view checks passed"
   pure failed
 
 /-- Claim-diff checks: each `tests/diffs/<name>/` has `old.lrep`, `new.lrep` and an
