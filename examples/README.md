@@ -19,6 +19,7 @@ Most examples use `examples/lrep.json`, which loads the core vocabularies and th
 | [`health-check.lrep`](health-check.lrep) | Calling an alert command when a check fails. Its only claim is `always connects`, because a `run` step could do anything |
 | [`composite/retire-old-logs.lrep`](composite/retire-old-logs.lrep) | An op defined in lrep itself: `retire` compresses, uploads and deletes, and the claims see through it ([`vocab/retire.lrep`](composite/vocab/retire.lrep)) |
 | [`es/copiar-registro.lrep`](es/copiar-registro.lrep) | The same language in Spanish |
+| [`obsidian/`](obsidian/README.md) | A sketch of safe app plugins: an app-owned vocabulary, pure plugin ops, data-flow claims, an install prompt, and a malicious update that's caught |
 
 ## What the checker catches
 

@@ -102,7 +102,8 @@ A sentence that begins "This section" is a claim about every step the section mi
 - A claim names an effect, `reads`, `writes`, `deletes`, `connects`, `listens` or `runs`, or any op, as in `never uploads`.
 - A string in a claim is a URL if it has a scheme, and otherwise an absolute path.
 - A relative path, or a `run the command …` step, has effects the checker can't determine, so any claim that depends on it fails.
-- `never` and `only` claims are covered by the proof in `Lrep/Sound.lean`. `always` and `at most` claims are checked, but the proof doesn't cover them yet.
+- An op can name a contents label, so claims can say where data came from rather than where it goes. If `post` has the contents label `from`, then `never posts from "/Journal"` fails when any posted text could have come from `/Journal`, even if it went to an allowed server. These are data-flow claims.
+- `never` and `only` claims are covered by the proof in `Lrep/Sound.lean`. `always`, `at most` and data-flow claims are checked, but the proof doesn't cover them yet. `lrep permissions` shows which is which.
 
 ## Asides and forbidden words
 
@@ -120,6 +121,8 @@ Some words are errors, each with a suggested fix: modals such as "may" and "shou
 ## Vocabularies and projects
 
 A vocabulary is a JSON file that defines the words a program can use: ops, with their arguments and effects; sorts; predicates; constants; units; and checked descriptive words. Each op declares its effects, such as "reads its object" or "writes to its `to` argument". Claims are checked against those declarations, and the runtime stops an op that does anything else. An op can also be defined by a section of lrep, in which case its effects come from that section.
+
+A vocabulary marked `"pure": true` may contain only ops with no effects: ops that compute, such as rendering or summarizing text. This lets a plugin author ship computation without being able to touch anything; the effectful ops stay with whoever owns the main vocabulary. [`examples/obsidian`](../examples/obsidian/README.md) shows this for app plugins.
 
 A project's `lrep.json`, next to its programs, lists its vocabularies:
 

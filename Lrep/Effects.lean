@@ -375,11 +375,6 @@ def checkPath (lex : Lexicon) (env : REnv) (stmts : List CStmt) (c : CClaim) : V
     let ok := match info.most with | some n => n ≤ c.count | none => false
     ⟨c, ok, if ok then [] else info.sites.map wit, rs.flatMap (·.2)⟩
 
-/-- Checks any claim: `never` and `only` against the inferred effects, `always` and
-`at most` against the paths. -/
-def checkClaim (lex : Lexicon) (env : REnv) (inf : Inferred) (stmts : List CStmt) (c : CClaim) : Verdict :=
-  if c.word == "always" || c.word == "at most" then checkPath lex env stmts c else check env inf c
-
 /-! ## Qualifiers
 
 A qualifier is a descriptive word with a checked meaning: where a value lies (`within`),
@@ -489,5 +484,64 @@ def qualHovers (lex : Lexicon) (s : CSection) : List (Span × String) :=
 def checkQuals (lex : Lexicon) (s : CSection) : List Diagnostic :=
   let (loc, orig) := bindStmts lex ([], []) s.stmts
   s.quals.filterMap (checkQual lex loc orig)
+
+/-! ## Data-flow claims
+
+A claim that uses an op's contents label, as in `never posts from "/Journal"`, is about where
+the posted data came from rather than where it goes. It's checked against each call's object
+origins, from the same analysis as `from` qualifiers. The soundness proof doesn't cover it yet.
+-/
+
+mutual
+/-- Every call of the op `base`, with where its object's contents came from. -/
+def flowStmt (lex : Lexicon) (base : String) (envs : REnv × REnv) :
+    CStmt → List (Span × List RVal) × (REnv × REnv)
+  | .call id op args site =>
+    let here := if op.base == base then
+        [(site, args.filter (·.label == "") |>.flatMap fun a => originRes envs.2 a.val)]
+      else []
+    (here, bindStmt lex envs (.call id op args site))
+  | .ite _ _ thn els =>
+    let (a, e1) := flowStmts lex base envs thn
+    let (b, e2) := flowStmts lex base e1 els
+    (a ++ b, e2)
+  | .loop elem coll body =>
+    let (loc, orig) := envs
+    flowStmts lex base ((elem, valRes loc coll) :: loc, (elem, originRes orig coll) :: orig) body
+  | .try body h =>
+    let (a, e1) := flowStmts lex base envs body
+    let (b, e2) := flowStmts lex base e1 h
+    (a ++ b, e2)
+
+def flowStmts (lex : Lexicon) (base : String) (envs : REnv × REnv) :
+    List CStmt → List (Span × List RVal) × (REnv × REnv)
+  | [] => ([], envs)
+  | s :: rest =>
+    let (a, e1) := flowStmt lex base envs s
+    let (b, e2) := flowStmts lex base e1 rest
+    (a ++ b, e2)
+end
+
+/-- Checks a data-flow claim: `never` fails if any call's contents may come from a named
+place; `only` fails if any may come from elsewhere. -/
+def checkFlow (lex : Lexicon) (env : REnv) (stmts : List CStmt) (c : CClaim) (label : String) : Verdict :=
+  let claimRs := (argRes env c.args label).map (·.res)
+  let calls := (flowStmts lex c.op.base ([], []) stmts).1
+  let verb := s!"{c.op.form "s"} {label}"
+  let bad : List Witness := calls.flatMap fun (site, origs) =>
+    let offending := origs.filter fun r =>
+      if c.word == "never" then claimRs.any (overlaps · r.res) else !claimRs.any (covers · r.res)
+    offending.map fun r => ⟨site, r.res, r.origin, r.text, verb⟩
+  ⟨c, bad.isEmpty, bad, claimRs⟩
+
+/-- Checks any claim: `never` and `only` against the inferred effects, or against data flow
+when they use an op's contents label; `always` and `at most` against the paths. -/
+def checkClaim (lex : Lexicon) (env : REnv) (inf : Inferred) (stmts : List CStmt) (c : CClaim) : Verdict :=
+  match c.op.contentsLabel with
+  | some l =>
+    if c.args.any (·.label == l) then checkFlow lex env stmts c l
+    else if c.word == "always" || c.word == "at most" then checkPath lex env stmts c else check env inf c
+  | none =>
+    if c.word == "always" || c.word == "at most" then checkPath lex env stmts c else check env inf c
 
 end Lrep

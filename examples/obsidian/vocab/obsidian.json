@@ -1,0 +1,375 @@
+{
+ "vocabulary": "obsidian",
+ "version": "0.1.0",
+ "sorts": [
+  {
+   "name": "note",
+   "forms": [
+    "note",
+    "notes"
+   ],
+   "literal": "path",
+   "resource": "path-exact"
+  },
+  {
+   "name": "folder",
+   "forms": [
+    "folder",
+    "folders"
+   ],
+   "literal": "path",
+   "resource": "path-prefix"
+  },
+  {
+   "name": "text",
+   "forms": [
+    "text"
+   ],
+   "literal": "string",
+   "resource": "none"
+  },
+  {
+   "name": "url",
+   "forms": [
+    "url",
+    "urls"
+   ],
+   "literal": "url",
+   "resource": "url"
+  },
+  {
+   "name": "display",
+   "forms": [],
+   "literal": "none",
+   "resource": "url"
+  }
+ ],
+ "constants": [
+  {
+   "forms": [
+    "vault"
+   ],
+   "sort": "folder",
+   "resource": {
+    "path": "/"
+   }
+  },
+  {
+   "forms": [
+    "screen"
+   ],
+   "sort": "display",
+   "resource": {
+    "url": "app://screen"
+   }
+  }
+ ],
+ "predicates": [
+  {
+   "forms": [
+    "draft"
+   ],
+   "subject": [
+    "note"
+   ],
+   "labels": {},
+   "required": [],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  },
+  {
+   "forms": [
+    "empty"
+   ],
+   "subject": [
+    "note",
+    "folder"
+   ],
+   "labels": {},
+   "required": [],
+   "effects": [
+    {
+     "kind": "read",
+     "on": "subject"
+    }
+   ]
+  }
+ ],
+ "ops": [
+  {
+   "forms": {
+    "base": "read",
+    "s": "reads",
+    "past": "read",
+    "ing": "reading",
+    "pp": "read"
+   },
+   "object": [
+    "note"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": "read",
+   "claimLabels": [
+    "from"
+   ]
+  },
+  {
+   "forms": {
+    "base": "write",
+    "s": "writes",
+    "past": "wrote",
+    "ing": "writing",
+    "pp": "written"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {
+    "to": [
+     "note"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "write",
+     "on": "label:to"
+    }
+   ],
+   "names": "write",
+   "claimLabels": [
+    "to"
+   ]
+  },
+  {
+   "forms": {
+    "base": "append",
+    "s": "appends",
+    "past": "appended",
+    "ing": "appending",
+    "pp": "appended"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {
+    "to": [
+     "note"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "read",
+     "on": "label:to"
+    },
+    {
+     "kind": "write",
+     "on": "label:to"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "list",
+    "s": "lists",
+    "past": "listed",
+    "ing": "listing",
+    "pp": "listed"
+   },
+   "object": [
+    "folder"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "note",
+    "list": true,
+    "resource": "same(object)"
+   },
+   "effects": [
+    {
+     "kind": "read",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "trash",
+    "s": "trashes",
+    "past": "trashed",
+    "ing": "trashing",
+    "pp": "trashed"
+   },
+   "object": [
+    "note"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "delete",
+     "on": "object"
+    }
+   ],
+   "names": "delete",
+   "claimLabels": [
+    "from"
+   ]
+  },
+  {
+   "forms": {
+    "base": "fetch",
+    "s": "fetches",
+    "past": "fetched",
+    "ing": "fetching",
+    "pp": "fetched"
+   },
+   "object": [
+    "url"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "connect",
+     "on": "object"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "post",
+    "s": "posts",
+    "past": "posted",
+    "ing": "posting",
+    "pp": "posted"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {
+    "to": [
+     "url"
+    ]
+   },
+   "required": [
+    "object",
+    "to"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "write",
+     "on": "label:to"
+    },
+    {
+     "kind": "connect",
+     "on": "label:to"
+    }
+   ],
+   "names": null,
+   "contentsLabel": "from"
+  },
+  {
+   "forms": {
+    "base": "show",
+    "s": "shows",
+    "past": "showed",
+    "ing": "showing",
+    "pp": "shown"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {
+    "on": [
+     "display"
+    ]
+   },
+   "required": [
+    "object",
+    "on"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "write",
+     "on": "label:on"
+    }
+   ],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "connect",
+    "s": "connects",
+    "past": "connected",
+    "ing": "connecting",
+    "pp": "connected"
+   },
+   "object": [],
+   "labels": {
+    "to": [
+     "url"
+    ]
+   },
+   "required": [
+    "to"
+   ],
+   "returns": null,
+   "effects": [
+    {
+     "kind": "connect",
+     "on": "label:to"
+    }
+   ],
+   "names": "connect",
+   "claimLabels": [
+    "to"
+   ]
+  }
+ ]
+}

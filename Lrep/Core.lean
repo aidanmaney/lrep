@@ -4,6 +4,7 @@ into. Every value is a numbered binding (`v3`), every argument is labelled, cond
 predicate calls, and a composite op's body appears inlined after its call.
 -/
 import Lrep
+import Lrep.Server
 
 namespace Lrep
 
@@ -82,5 +83,52 @@ def FileResult.coreText (r : FileResult) : String :=
     "\n".intercalate ([s!"section \"{s.name}\""] ++ coreStmts r.bodyLens rn "  " 0 s.stmts ++
       s.quals.map (fun q => s!"  check {q.q.forms.headD ""}({coreVal rn q.val})") ++
       s.claims.map (fun c => "  " ++ coreClaim rn c))) ++ "\n"
+
+/-! ## Permissions
+
+`lrep permissions FILE` is what an install prompt would show: for each section (one command),
+the promises it makes and whether each is proved or only checked, everything it may touch, and
+the pure ops it computes with.
+-/
+
+private def placePhrase (r : Res) : String :=
+  match r with
+  | .path segs true => s!"anything under {pathString segs}"
+  | .url sc h segs => s!"{sc}://{h}{if segs.isEmpty then "" else pathString segs}"
+  | .top => "anything at all"
+  | _ => plainRes r
+
+private def mayVerb : Kind → String
+  | .read => "read" | .write => "write to" | .delete => "delete" | .listen => "listen on"
+  | .connect => "connect to" | .spawn => "run"
+
+mutual
+private def pureOps : CStmt → List String
+  | .call _ op _ _ => if op.effects.isEmpty && op.body.isNone then [op.base] else []
+  | .ite _ _ thn els => pureOpsList thn ++ pureOpsList els
+  | .loop _ _ body => pureOpsList body
+  | .try body h => pureOpsList body ++ pureOpsList h
+private def pureOpsList : List CStmt → List String
+  | [] => []
+  | s :: rest => pureOps s ++ pureOpsList rest
+end
+
+def FileResult.permissionsText (r : FileResult) : String :=
+  let blocks := (r.sections.zip r.cores).map fun (s, core) =>
+    let promises := s.verdicts.map fun v =>
+      let flow := (v.claim.op.contentsLabel.map fun l => v.claim.args.any (·.label == l)).getD false
+      let proved := (v.claim.word == "never" || v.claim.word == "only") && !flow
+      s!"    {if v.holds then "✓" else "✗"} {v.claim.text}  ({if !v.holds then "broken" else if proved then "proved" else "checked"})"
+    let kinds := [Kind.read, .write, .delete, .listen, .connect, .spawn]
+    let may := kinds.flatMap fun k =>
+      ((s.effects.filter (·.kind == k)).map (placePhrase ·.res)).eraseDups.map (s!"    {mayVerb k} " ++ ·)
+    let pure := (pureOpsList core.stmts).eraseDups
+    let broken := s.verdicts.any (!·.holds)
+    [s!"{s.name}"] ++
+      (if s.verdicts.isEmpty then ["  Promises: none"] else ["  Promises:"] ++ promises) ++
+      (if may.isEmpty then ["  May: nothing"] else ["  May:"] ++ may) ++
+      (if pure.isEmpty then [] else [s!"  Computes with (touches nothing): {", ".intercalate pure}"]) ++
+      (if broken then ["  ! This command breaks its own promises. Don't install it."] else [])
+  "\n\n".intercalate (blocks.map ("\n".intercalate ·)) ++ "\n"
 
 end Lrep

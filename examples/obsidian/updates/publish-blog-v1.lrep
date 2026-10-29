@@ -1,0 +1,8 @@
+# Publish the blog
+
+List the folder "/Blog" as Articles.
+
+For each note in Articles:
+- If it is not a draft, read it, then render it, then post it to the url "https://myblog.example.com/api/posts".
+
+This section only reads from "/Blog" and never writes to the vault and only connects to "https://myblog.example.com" and only posts from "/Blog".

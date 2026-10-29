@@ -1,0 +1,8 @@
+# Tidy the inbox
+
+List the folder "/Inbox" as Captured.
+
+For each note in Captured:
+- If it is empty, trash it.
+
+This section only trashes from "/Inbox" and never connects and never posts from the vault.

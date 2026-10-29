@@ -9,7 +9,7 @@ import Lrep.Core
 open Lrep
 
 def usage : String :=
-  "usage:\n  lrep check [--json] FILE…\n  lrep residue FILE\n  lrep core FILE\n  lrep tokens FILE\n  lrep effects FILE\n  lrep grammar [--calm]\n  lrep lsp\n  lrep diff [--json] OLD NEW\n  lrep vocab-diff OLD.json NEW.json\n  lrep dataflow FILE\n  lrep run [--root DIR] FILE\n  lrep audit [--dry-run] FILE\n"
+  "usage:\n  lrep check [--json] FILE…\n  lrep residue FILE\n  lrep core FILE\n  lrep permissions FILE\n  lrep tokens FILE\n  lrep effects FILE\n  lrep grammar [--calm]\n  lrep lsp\n  lrep diff [--json] OLD NEW\n  lrep vocab-diff OLD.json NEW.json\n  lrep dataflow FILE\n  lrep run [--root DIR] FILE\n  lrep audit [--dry-run] FILE\n"
 
 def withFile (path : String) (k : FileResult → IO UInt32) : IO UInt32 := do
   try
@@ -45,6 +45,12 @@ def main (args : List String) : IO UInt32 := do
       IO.eprintln "lrep: the core view needs a file without errors"
       return 1
     IO.print r.coreText; pure 0
+  | ["permissions", f] => withFile f fun r => do
+    if r.diags.any fun d => d.isError && d.code != "E040" then
+      IO.print r.text
+      IO.eprintln "lrep: the permissions view needs a file whose only errors are broken claims"
+      return 1
+    IO.print r.permissionsText; pure (if r.hasErrors then 1 else 0)
   | ["tokens", f] => withFile f fun r => do IO.print r.tokensText; pure 0
   | ["effects", f] => withFile f fun r => do
     IO.print r.effectsText; pure (if r.hasErrors then 1 else 0)

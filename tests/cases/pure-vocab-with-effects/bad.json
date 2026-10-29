@@ -1,0 +1,34 @@
+{
+ "vocabulary": "bad-pure",
+ "version": "0.1.0",
+ "pure": true,
+ "ops": [
+  {
+   "forms": {
+    "base": "tidy",
+    "s": "tidies",
+    "past": "tidied",
+    "ing": "tidying"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [
+    {
+     "kind": "write",
+     "on": "top"
+    }
+   ],
+   "names": null
+  }
+ ]
+}

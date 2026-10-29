@@ -1,0 +1,13 @@
+{
+  "changes": [
+    [
+      "removed",
+      "only posts from \"/Blog\""
+    ],
+    [
+      "weakened",
+      "only reads from \"/Blog\""
+    ]
+  ],
+  "flagged": true
+}

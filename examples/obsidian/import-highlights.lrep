@@ -1,0 +1,7 @@
+# Import highlights
+
+Fetch the url "https://readwise.io/api/v2/export" as Highlights.
+Append Highlights to the note "/Readwise/Highlights.md".
+Show the text "Highlights imported" on the screen.
+
+This section only connects to "https://readwise.io" and only writes to "/Readwise" and the screen and never trashes.

@@ -106,6 +106,9 @@ structure OpDef where
   names : Option String
   claimLabels : List String
   body : Option CompositeBody := none
+  /-- A claim label that refers to where the object's contents came from, as in
+  `never posts from "/Journal"`: a data-flow claim. -/
+  contentsLabel : Option String := none
   deriving Repr, Inhabited
 
 def OpDef.base (o : OpDef) : String := (o.forms.lookup "base").getD ""
@@ -341,7 +344,8 @@ private def retRes (s : String) : LoadM RetRes :=
   else throw s!"unknown returns.resource \"{s}\""
 
 private def loadOp (j : Json) : LoadM OpDef := do
-  onlyKeys "an op" j ["forms", "object", "labels", "required", "returns", "effects", "names", "claimLabels", "body"]
+  onlyKeys "an op" j ["forms", "object", "labels", "required", "returns", "effects", "names", "claimLabels", "body",
+    "contentsLabel"]
   let forms ← match field j "forms" with
     | some (.obj kvs) => kvs.toList.mapM fun (k, v) => do
         unless ["base", "s", "past", "ing", "pp"].contains k do throw s!"unknown op form \"{k}\""
@@ -379,14 +383,17 @@ private def loadOp (j : Json) : LoadM OpDef := do
          labels := ← labelMap "op labels" (field j "labels"),
          required := ← strList "op required" (field j "required"), returns,
          effects := ← effects "op effects" (field j "effects"), names,
-         claimLabels := ← strList "claimLabels" (field j "claimLabels") }
+         claimLabels := ← strList "claimLabels" (field j "claimLabels"),
+         contentsLabel := ← match field j "contentsLabel" with
+           | some v => do pure (some (← str "contentsLabel" v))
+           | none => pure none }
 
 def loadVocab (src : String) : LoadM Vocab := do
   let j ← match Json.parse src with
     | .ok j => pure j
     | .error e => throw s!"invalid JSON: {e}"
   onlyKeys "a vocabulary" j ["vocabulary", "version", "sorts", "units", "constants", "predicates", "ops",
-    "qualifiers", "disjoint"]
+    "qualifiers", "disjoint", "pure"]
   let list (k : String) := match field j k with | some v => arr k v | none => pure []
   let qualifiers ← (← list "qualifiers").mapM fun q => do
     onlyKeys "a qualifier" q ["forms", "within", "from"]
@@ -406,7 +413,14 @@ def loadVocab (src : String) : LoadM Vocab := do
          units := ← (← list "units").mapM loadUnit,
          constants := ← (← list "constants").mapM loadConst,
          predicates := ← (← list "predicates").mapM loadPred,
-         ops := ← (← list "ops").mapM loadOp, qualifiers, disjoint }
+         ops := ← (do
+           let ops ← (← list "ops").mapM loadOp
+           -- A pure vocabulary's ops compute and touch nothing: no effects, no bodies.
+           if (j.getObjValAs? Bool "pure").toOption == some true then
+             for o in ops do
+               unless o.effects.isEmpty && o.body.isNone && o.names.isNone do
+                 throw s!"op \"{o.base}\" is in a pure vocabulary, so it may declare no effects, names or body"
+           pure ops), qualifiers, disjoint }
 
 /-- Every form a vocabulary reserves, lower-cased. -/
 private def dedup (xs : List String) : List String :=

@@ -385,7 +385,7 @@ def splitClaims (ts : List Tok) : List (List Tok) :=
 private def claimText (ts : List Tok) : String := " ".intercalate (ts.map (·.text))
 
 private def claimBody (w : Tok) (word : String) (od : OpDef) (ts rest : List Tok) : P Claim := do
-  let declared := if od.isPrimitive then od.claimLabels else od.labels.map (·.1)
+  let declared := (if od.isPrimitive then od.claimLabels else od.labels.map (·.1)) ++ od.contentsLabel.toList
   let (obj, rest) := match rest.head? with
     | some u => if startsAtom u then (match value? rest with | some (v, r) => (some v, r) | none => (none, rest)) else (none, rest)
     | none => (none, rest)

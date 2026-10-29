@@ -1,0 +1,6 @@
+{
+ "vocabularies": [
+  "../vocab/obsidian.json",
+  "../vocab/plugin-ops.json"
+ ]
+}

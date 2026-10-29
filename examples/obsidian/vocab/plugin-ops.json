@@ -1,0 +1,76 @@
+{
+ "vocabulary": "plugin-ops",
+ "version": "0.1.0",
+ "pure": true,
+ "ops": [
+  {
+   "forms": {
+    "base": "render",
+    "s": "renders",
+    "past": "rendered",
+    "ing": "rendering",
+    "pp": "rendered"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "redact",
+    "s": "redacts",
+    "past": "redacted",
+    "ing": "redacting",
+    "pp": "redacted"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [],
+   "names": null
+  },
+  {
+   "forms": {
+    "base": "summarize",
+    "s": "summarizes",
+    "past": "summarized",
+    "ing": "summarizing",
+    "pp": "summarized"
+   },
+   "object": [
+    "text"
+   ],
+   "labels": {},
+   "required": [
+    "object"
+   ],
+   "returns": {
+    "sort": "text",
+    "list": false,
+    "resource": "none"
+   },
+   "effects": [],
+   "names": null
+  }
+ ]
+}

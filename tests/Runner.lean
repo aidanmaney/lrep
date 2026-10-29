@@ -111,6 +111,16 @@ def runServerChecks : IO Nat := do
   if !spans.any (fun (sp, ty, m) => sp.line == 3 && sp.col == 35 && ty == progIdx && m == opBit) then
     failed := failed + 1
     IO.println "FAIL  semantic tokens: serve is not a program word marked op"
+  -- The permissions view: a data-flow claim is checked, not proved; a broken plugin is flagged.
+  let pv ← checkFile "examples/obsidian/publish-blog.lrep"
+  let bad ← checkFile "examples/obsidian/updates/publish-blog-v2.lrep"
+  for (txt, want) in [(pv.permissionsText, "✓ only posts from \"/Blog\"  (checked)"),
+                      (pv.permissionsText, "✓ only reads from \"/Blog\"  (proved)"),
+                      (bad.permissionsText, "read anything under /Journal"),
+                      (bad.permissionsText, "Don't install it")] do
+    if (txt.splitOn want).length < 2 then
+      failed := failed + 1
+      IO.println s!"FAIL  permissions view: missing {want}"
   -- The core view: the composite op's call, then its inlined body indented under it,
   -- with values numbered without gaps.
   let cr ← checkFile "examples/composite/retire-old-logs.lrep"
@@ -120,7 +130,7 @@ def runServerChecks : IO Nat := do
     if (core.splitOn want).length < 2 then
       failed := failed + 1
       IO.println s!"FAIL  core view: missing {want}"
-  IO.println s!"{hoverChecks.length + 12 - failed}/{hoverChecks.length + 12} server and view checks passed"
+  IO.println s!"{hoverChecks.length + 16 - failed}/{hoverChecks.length + 16} server and view checks passed"
   pure failed
 
 /-- Claim-diff checks: each `tests/diffs/<name>/` has `old.lrep`, `new.lrep` and an
@@ -249,7 +259,8 @@ def exampleCodes : List (String × List String) :=
   [("caught/claims-too-little.lrep", ["E040"]),
    ("caught/misleading-words.lrep", ["E034", "E034", "E034"]),
    ("caught/run-defeats-claims.lrep", ["E040"]),
-   ("caught/unknown-verb.lrep", ["E020"])]
+   ("caught/unknown-verb.lrep", ["E020"]),
+   ("obsidian/updates/publish-blog-v2.lrep", ["E040", "E040"])]
 
 partial def lrepFiles (dir : System.FilePath) : IO (List System.FilePath) := do
   let mut out := []
